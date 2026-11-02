@@ -19,6 +19,7 @@ exports/
 .env
 .env.*
 !.env.example
+.secret.key
 
 # OS / editor
 .DS_Store
