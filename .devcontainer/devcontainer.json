@@ -1,0 +1,29 @@
+{
+  "name": "Procurement Intelligence",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "forwardPorts": [
+    8000
+  ],
+  "portsAttributes": {
+    "8000": {
+      "label": "Procurement Intelligence",
+      "onAutoForward": "openPreview",
+      "visibility": "private"
+    }
+  },
+  "postCreateCommand": "pip install -r requirements.txt && python -m scripts.seed_demo --tenders 60 && python -m scripts.ingest_fixture gem_results",
+  "postAttachCommand": "uvicorn app.main:app --host 0.0.0.0 --port 8000",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "files.eol": "\n"
+      }
+    }
+  },
+  "remoteUser": "vscode"
+}
