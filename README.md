@@ -26,6 +26,7 @@ v1. Later phases are scaffolded, not finished, and are labelled as such everywhe
 | 2 | Core schema (36 tables), extraction pipeline, dedupe, taxonomy, search UI | **Done** |
 | 3 | Price intelligence: normalisation, comparable sets, statistics with sample-size floors, bid recommender | **Done** |
 | 4 | Research assistant with an evidence contract and numeric verifier | **Done** |
+| 4b | Operator settings UI — paste an API key, validated and encrypted, effective immediately | **Done** |
 | 5 | State portals (GePNIC template), CPPP, IREPS | **Not built** — registry rows exist, disabled |
 | 6 | Supplier/buyer intelligence (entity resolution beyond exact matching) | **Partial** — profiles work; review queue not built |
 | 7 | Opportunity discovery, recurrence scoring | **Not built** |
@@ -60,13 +61,18 @@ make fixture                  # ingest a GeM result fixture through the real con
 make run                      # http://localhost:8000
 ```
 
-Then open:
+Then open **`/settings`** and paste an OpenRouter key. That is the whole setup: the key is
+validated against the provider, encrypted at rest, and used on the very next request — no
+environment file, no restart, no redeploy. Everything else already works without it.
+
+The screens:
 
 - `/` — coverage overview (tenders, ladder coverage, price basis split)
 - `/search` — tender search with state/status filters
 - `/prices` — price intelligence, comparable sets, bid recommendation calculator
 - `/assistant` — the research assistant
 - `/sources` — source registry and why each source is or isn't runnable
+- `/settings` — paste a key, pick models, test the connection
 - `/docs` — OpenAPI
 
 ### With PostgreSQL
@@ -79,7 +85,7 @@ docker compose up --build
 ### Run the tests
 
 ```bash
-make test        # 67 tests, no network required
+make test        # 77 tests, no network required
 ```
 
 The suite covers the things that would quietly ruin the product: normalisation arithmetic, citation
@@ -87,6 +93,31 @@ verification, parser regressions, the compliance gate, sample-size rules, and th
 behaviour.
 
 ---
+
+## Connecting a model (the settings screen)
+
+`/settings` is the only setup step. Paste a key, press **Save & connect**, done.
+
+What happens behind that button, and why it is built this way:
+
+| Step | Behaviour |
+|---|---|
+| **Validate** | The key is checked against the provider (`GET /key`). A rejected key is **never** saved, so a typo cannot silently become the configured key. |
+| **Encrypt** | Stored with Fernet, using a key held outside the database (`APP_SECRET_KEY` or a `0600` `.secret.key` file). A database dump or backup does not expose it. |
+| **Apply** | Read on the next request. No restart, no redeploy. |
+| **Never return** | The API and the HTML only ever emit a masked form (`sk-or-v1-••••••••cdef`). Nothing logs the key. |
+| **Test only** | Checks the key without saving it. |
+| **Remove** | Clears the stored key and falls back to `OPENROUTER_API_KEY` if one is set. |
+| **Save without verifying** | For a deployment that cannot reach the provider from the server. The key is stored, marked unverified, and used anyway. |
+
+Two model slots are configured separately, because they do different jobs: a cheap model for
+bulk PDF extraction, a stronger one for phrasing assistant answers. The picker is populated from
+the provider's live catalogue (450+ models), and falls back to a curated list when the catalogue
+cannot be fetched.
+
+Without a key the platform is still fully usable — search, price intelligence and the assistant all
+work, with deterministic rules for extraction and templated answers. The header chip shows
+**AI connected** or **AI off** on every page.
 
 ## The five ideas that make this different from a tender aggregator
 
@@ -190,10 +221,13 @@ app/
     matching.py        explainable product matching, tiered comparable sets
     aggregates.py      statistics, coverage discipline, bid recommender
     assistant.py       evidence contract, numeric verifier, abstention
+  settings_store.py    encrypted operator settings (the API key)
+  llm_config.py        effective LLM config, key validation, model catalogue
   routers/api.py       versioned REST API
+  routers/settings.py  settings API (save / test / clear)
   routers/pages.py     server-rendered UI
 scripts/               seed, ingest-fixture, run-connector, sync-registry
-tests/                 67 tests, no network
+tests/                 77 tests, no network
 docs/                  the implementation blueprint (PDF)
 ```
 
@@ -237,7 +271,8 @@ Everything is environment-driven; see `.env.example`.
 |---|---|---|
 | `DATABASE_URL` | `sqlite:///./procintel.db` | Use `postgresql+psycopg://…` in production |
 | `ARCHIVE_DIR` | `./archive` | Content-addressed artefact store |
-| `OPENROUTER_API_KEY` | *empty* | Optional. Without it, extraction is rule-based and the assistant uses templates |
+| `OPENROUTER_API_KEY` | *empty* | Optional, and **not needed** — the key is normally set in `/settings`. Setting it here seeds a default that the UI can override or clear |
+| `APP_SECRET_KEY` | *generated* | Fernet key for encrypting UI-stored secrets. Set it in production; otherwise one is generated into `.secret.key` (gitignored) |
 | `EXTRACTION_MODEL` | `google/gemini-2.0-flash-001` | Cheap tier for bulk extraction |
 | `ASSISTANT_MODEL` | `anthropic/claude-3.5-haiku` | Stronger tier for phrasing |
 | `CRAWLER_USER_AGENT` | identified bot + contact | Never use a browser UA to disguise the crawler |
@@ -246,8 +281,9 @@ Everything is environment-driven; see `.env.example`.
 | `MIN_N_FOR_STATS` | `3` | Below this, show records and no statistic |
 | `MIN_N_FOR_DISTRIBUTION` | `8` | Below this, no percentiles and no trend |
 
-**Never commit an API key.** Put it in `.env` (gitignored) or a secret store. The application reads it from
-the environment only and never writes it to disk or to a log.
+**Never commit an API key.** The supported path is to paste it into `/settings`, where it is encrypted at
+rest and never returned. If you set it in the environment instead, use `.env` (gitignored) or a secret store.
+Either way it never reaches a log.
 
 ---
 
