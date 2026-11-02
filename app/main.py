@@ -11,7 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from .config import settings
 from .db import init_db, session_scope
 from .registry import sync_sources
-from .routers import api, pages
+from .routers import api, pages, settings as settings_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -48,7 +48,28 @@ app = FastAPI(
 )
 
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+
+@app.middleware("http")
+async def attach_llm_state(request, call_next):
+    """Expose the effective LLM configuration to every template.
+
+    The header shows a connected/off chip on every page, so the state has to be
+    available globally rather than threaded through each route.
+    """
+    if request.url.path.startswith("/static"):
+        return await call_next(request)
+    from .db import session_scope
+    from .settings_store import SettingsStore
+
+    try:
+        with session_scope() as db:
+            request.state.llm = SettingsStore(db).llm()
+    except Exception:  # noqa: BLE001 - a settings read must never break a page
+        request.state.llm = None
+    return await call_next(request)
 app.include_router(api.router)
+app.include_router(settings_router.router)
 app.include_router(pages.router)
 
 

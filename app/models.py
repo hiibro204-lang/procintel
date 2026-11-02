@@ -725,6 +725,24 @@ class UserQuotation(Base):
     created_at = Column(DateTime(timezone=True), default=_now, nullable=False)
 
 
+class AppSetting(Base):
+    """Operator-editable settings (the LLM key lives here).
+
+    Secret values are encrypted before they reach this table — see
+    app/settings_store.py. Nothing in this table is ever returned in plaintext
+    by the API.
+    """
+
+    __tablename__ = "app_settings"
+
+    id = Column(Integer, primary_key=True)
+    key = Column(String(80), unique=True, nullable=False)
+    value = Column(Text, nullable=True)
+    is_encrypted = Column(Boolean, default=False, nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=_now, nullable=False)
+    updated_by = Column(String(200), nullable=True)
+
+
 class AuditLog(Base):
     """Append-only record of access and change."""
 

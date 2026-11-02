@@ -18,7 +18,6 @@ from ..connectors import ConnectorError, build_connector
 from ..db import get_db
 from ..intelligence.aggregates import product_price_stats, recompute_aggregates, recommend_bid_price
 from ..intelligence.assistant import ask
-from ..intelligence.llm_client import assistant_client
 from ..intelligence.matching import best_product_match, comparable_set
 from ..models import (
     Award,
@@ -38,6 +37,7 @@ from ..models import (
     Tender,
     TenderLineItem,
 )
+from ..llm_config import client_for, runtime_for
 from ..registry import check, sync_sources
 
 router = APIRouter(prefix="/api/v1", tags=["api"])
@@ -443,9 +443,16 @@ class AskRequest(BaseModel):
 
 @router.post("/assistant")
 def assistant(req: AskRequest, db: Session = Depends(get_db)):
-    client = assistant_client() if req.use_llm else None
-    answer = ask(db, req.question, use_llm=req.use_llm, llm=client)
-    return answer.to_dict()
+    runtime = runtime_for(db)
+    client = client_for(db, "assistant") if (req.use_llm and runtime.configured) else None
+    answer = ask(db, req.question, use_llm=bool(client), llm=client)
+    payload = answer.to_dict()
+    payload["llm"] = {
+        "configured": runtime.configured,
+        "used": bool(client),
+        "model": runtime.model_assistant if client else None,
+    }
+    return payload
 
 
 # --------------------------------------------------------------------------- #
@@ -480,6 +487,35 @@ def connector_run(source_key: str, db: Session = Depends(get_db)):
         "run_id": run.id, "status": run.status, "pages_fetched": run.pages_fetched,
         "records_parsed": run.records_parsed, "records_rejected": run.records_rejected,
         "error_class": run.error_class, "error_detail": run.error_detail,
+    }
+
+
+@router.post("/documents/{document_id}/extract")
+def extract_document(document_id: int, db: Session = Depends(get_db)):
+    """Run the extraction pipeline over one archived document.
+
+    Uses the configured key when there is one and falls back to the deterministic
+    rules when there is not, so this endpoint is useful either way.
+    """
+    from ..extraction.pipeline import process_document
+
+    document = db.get(Document, document_id)
+    if document is None:
+        raise HTTPException(404, "document not found")
+    runtime = runtime_for(db)
+    result = process_document(db, document, client=client_for(db, "extraction"))
+    return {
+        "document_id": document_id,
+        "status": result.get("status"),
+        "llm_used": result.get("llm_used", False),
+        "llm_configured": runtime.configured,
+        "fields": {
+            key: payload.get("value")
+            for key, payload in (result.get("fields") or {}).items()
+            if isinstance(payload, dict)
+        },
+        "dropped_uncited": result.get("dropped") or [],
+        "validation": result.get("validation"),
     }
 
 
