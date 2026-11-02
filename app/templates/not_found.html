@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-{% block title %}Not found{% endblock %}
-{% block content %}
-<div class="rounded-lg border border-rule p-12 text-center">
-  <p class="text-lg font-semibold text-navy">{{ what or 'Record' }} not found</p>
-  <p class="mt-1 text-sm text-slate-500">The record may have been superseded, or the identifier is wrong.</p>
-  <a href="/search" class="mt-4 inline-block rounded bg-navy px-4 py-2 text-sm text-white">Back to search</a>
-</div>
-{% endblock %}
