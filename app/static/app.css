@@ -1,0 +1,14 @@
+/* Small amount of hand-written CSS: the design system is Tailwind, these are the
+   details Tailwind utilities express awkwardly (tabular numbers in tables,
+   scrollbars, print rules). */
+table { font-variant-numeric: tabular-nums; }
+td, th { vertical-align: top; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #c9d1d9; border-radius: 6px; }
+::-webkit-scrollbar-track { background: #f2f4f7; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.95em;
+       background: #eef1f4; padding: 0.05rem 0.25rem; border-radius: 3px; }
+@media print {
+  header, footer, form, button { display: none !important; }
+  main { max-width: none; padding: 0; }
+}

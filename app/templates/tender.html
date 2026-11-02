@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}{{ t.title|truncate(60) }} — Procurement Intelligence{% endblock %}
+{% block content %}
+<a href="/search" class="text-xs text-teal hover:underline">&larr; Back to search</a>
+
+<div class="mt-3 flex flex-wrap items-start justify-between gap-4">
+  <div class="max-w-3xl">
+    <h1 class="text-xl font-semibold leading-snug text-navy">{{ t.title }}</h1>
+    <p class="mt-1 text-sm text-slate-500">
+      {{ t.portal_tender_id }}
+      {% if t.organisation %} · {{ t.organisation.name }}{% endif %}
+      {% if t.state %} · {{ t.state }}{% endif %}
+    </p>
+  </div>
+  <div class="flex flex-col items-end gap-1 text-xs">
+    <span class="rounded px-2 py-1 font-medium
+      {% if t.status == 'awarded' %}bg-teal/10 text-teal{% else %}bg-mist text-slate-600{% endif %}">
+      {{ t.status }}</span>
+    {% if t.portal_url %}
+    <a href="{{ t.portal_url }}" target="_blank" rel="noopener"
+       class="text-teal hover:underline">Open on source portal ↗</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+  {% for label, value in [
+      ('Estimated value', (t.estimated_value|inr) if t.estimated_value else 'not published'),
+      ('EMD', (t.emd_amount|inr) if t.emd_amount else '—'),
+      ('Tender fee', (t.tender_fee|inr) if t.tender_fee else '—'),
+      ('Closing', t.closing_at|shortdate)] %}
+  <div class="rounded-lg border border-rule p-3">
+    <p class="text-xs uppercase tracking-wider text-slate-500">{{ label }}</p>
+    <p class="mt-1 text-sm font-semibold text-navy">{{ value }}</p>
+  </div>
+  {% endfor %}
+</div>
+
+{% if t.award %}
+<div class="mt-6 rounded-lg border border-teal/30 bg-teal/5 p-4">
+  <h2 class="text-sm font-semibold text-navy">Awarded contract</h2>
+  <div class="mt-2 grid gap-4 sm:grid-cols-4 text-sm">
+    <div><p class="text-xs text-slate-500">Winner</p><p class="font-medium text-navy">{{ t.award.supplier or '—' }}</p></div>
+    <div><p class="text-xs text-slate-500">Contract value</p><p class="font-medium text-navy">{{ t.award.contract_value|inr }}</p></div>
+    <div><p class="text-xs text-slate-500">Quantity</p><p class="font-medium text-navy">{{ t.award.awarded_quantity or '—' }}</p></div>
+    <div><p class="text-xs text-slate-500">Bids received</p><p class="font-medium text-navy">{{ t.award.num_bids_received or '—' }}</p></div>
+  </div>
+</div>
+{% endif %}
+
+<div class="mt-6 grid gap-6 lg:grid-cols-2">
+  <div class="rounded-lg border border-rule">
+    <div class="border-b border-rule px-4 py-3">
+      <h2 class="text-sm font-semibold text-navy">Price ladder</h2>
+      <p class="text-xs text-slate-500">L1–L3 as published by the source. Ranks below L3 are held but not aggregated.</p>
+    </div>
+    <table class="w-full text-sm">
+      <thead class="bg-mist text-left text-xs uppercase tracking-wider text-slate-500">
+        <tr><th class="px-4 py-2">Rank</th><th class="px-4 py-2">Seller</th><th class="px-4 py-2 text-right">Quoted total</th></tr>
+      </thead>
+      <tbody class="divide-y divide-rule">
+        {% for r in t.price_ladder %}
+        <tr class="{% if r.rank == 1 %}bg-teal/5{% endif %}">
+          <td class="px-4 py-2 font-mono text-xs font-semibold text-navy">L{{ r.rank }}</td>
+          <td class="px-4 py-2 text-slate-700">{{ r.seller_name or '—' }}</td>
+          <td class="px-4 py-2 text-right font-medium text-navy">{{ r.total_price|inr }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" class="px-4 py-6 text-center text-slate-500">
+          No financial evaluation published for this tender.
+        </td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rounded-lg border border-rule">
+    <div class="border-b border-rule px-4 py-3">
+      <h2 class="text-sm font-semibold text-navy">Bidders &amp; technical evaluation</h2>
+      <p class="text-xs text-slate-500">Every participating seller the source disclosed.</p>
+    </div>
+    <table class="w-full text-sm">
+      <thead class="bg-mist text-left text-xs uppercase tracking-wider text-slate-500">
+        <tr><th class="px-4 py-2">Seller</th><th class="px-4 py-2">Make / model</th><th class="px-4 py-2">MSE</th></tr>
+      </thead>
+      <tbody class="divide-y divide-rule">
+        {% for b in t.bidders %}
+        <tr>
+          <td class="px-4 py-2 text-slate-700">{{ b.seller_name }}</td>
+          <td class="px-4 py-2 text-xs text-slate-500">{{ b.offered_make or '—' }}{% if b.offered_model %} / {{ b.offered_model }}{% endif %}</td>
+          <td class="px-4 py-2 text-xs text-slate-500">{{ b.mse_status or '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" class="px-4 py-6 text-center text-slate-500">No bidder list published.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-2">
+  <div class="rounded-lg border border-rule p-4">
+    <h2 class="text-sm font-semibold text-navy">Line items</h2>
+    <ul class="mt-2 divide-y divide-rule text-sm">
+      {% for li in t.line_items %}
+      <li class="flex items-start justify-between gap-4 py-2">
+        <div><p class="text-slate-700">{{ li.description|truncate(90) }}</p>
+          <p class="text-xs text-slate-400">line {{ li.line_no }}{% if li.hsn_code %} · HSN {{ li.hsn_code }}{% endif %}</p></div>
+        <span class="whitespace-nowrap text-slate-600">{{ li.quantity or '—' }} {{ li.unit or '' }}</span>
+      </li>
+      {% else %}
+      <li class="py-4 text-center text-slate-500">No line items extracted.</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="rounded-lg border border-rule p-4">
+    <h2 class="text-sm font-semibold text-navy">Provenance</h2>
+    <dl class="mt-2 space-y-1.5 text-sm">
+      {% for k, v in [
+        ('Extraction method', t.provenance.extraction_method),
+        ('Retrieved', t.provenance.retrieved_at|shortdate),
+        ('Last verified', t.provenance.last_verified_at|shortdate),
+        ('Verification state', t.provenance.verification_state),
+        ('Confidence', '%.0f%%'|format((t.provenance.confidence or 0) * 100))] %}
+      <div class="flex justify-between border-b border-rule pb-1">
+        <dt class="text-slate-500">{{ k }}</dt><dd class="font-medium text-slate-700">{{ v }}</dd>
+      </div>
+      {% endfor %}
+    </dl>
+    {% if t.contacts %}
+    <p class="mt-3 text-xs text-slate-500">Official channel (organisational):
+      {{ t.contacts[0].official_email or t.contacts[0].official_phone or '—' }}</p>
+    <p class="mt-1 text-[11px] text-slate-400">Individual officer names are stored but are not searchable or exportable.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

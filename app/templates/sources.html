@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Sources — Procurement Intelligence{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-semibold tracking-tight text-navy">Data source management</h1>
+<p class="mt-1 max-w-3xl text-sm text-slate-500">
+  A connector cannot be scheduled unless its policy record is current. The reasons a source is
+  blocked are shown here, because they are the platform's legal position expressed as data.
+</p>
+
+<div class="mt-5 overflow-hidden rounded-lg border border-rule">
+  <table class="w-full text-sm">
+    <thead class="bg-navy text-left text-xs uppercase tracking-wider text-slate-200">
+      <tr><th class="px-4 py-2.5">Source</th><th class="px-4 py-2.5">Tier</th>
+          <th class="px-4 py-2.5">robots</th><th class="px-4 py-2.5">Rate</th>
+          <th class="px-4 py-2.5">Policy reviewed</th><th class="px-4 py-2.5">Gate</th></tr>
+    </thead>
+    <tbody class="divide-y divide-rule">
+      {% for row in rows %}
+      <tr class="align-top hover:bg-mist/60">
+        <td class="px-4 py-3">
+          <p class="font-medium text-navy">{{ row.source.name }}</p>
+          <p class="text-xs text-slate-400">{{ row.source.key }} · {{ row.source.category }}</p>
+          {% if row.source.policy_note %}<p class="mt-1 text-xs text-slate-500">{{ row.source.policy_note|truncate(120) }}</p>{% endif %}
+        </td>
+        <td class="px-4 py-3"><span class="rounded bg-mist px-2 py-0.5 text-xs font-medium">{{ row.source.tier }}</span></td>
+        <td class="px-4 py-3 text-xs text-slate-600">{{ row.source.robots_status }}</td>
+        <td class="px-4 py-3 text-xs text-slate-600">{{ row.source.rate_limit_per_min }}/min</td>
+        <td class="px-4 py-3 text-xs text-slate-600">{{ row.source.policy_reviewed_at|shortdate }}</td>
+        <td class="px-4 py-3">
+          {% if row.gate.ok %}
+            <span class="rounded bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">runnable</span>
+          {% else %}
+            <span class="rounded bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700">blocked</span>
+            <ul class="mt-1 list-disc pl-4 text-[11px] text-slate-500">
+              {% for r in row.gate.reasons %}<li>{{ r }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-4 rounded-lg border border-rule bg-mist p-4 text-xs text-slate-600">
+  <p class="font-medium text-slate-700">Rules the gate enforces</p>
+  <ul class="mt-1 list-disc pl-5">
+    <li>robots.txt disallow means no collection, permanently, until the registry changes.</li>
+    <li>Sources requiring authentication are never crawled with credentials.</li>
+    <li>A policy review older than 365 days blocks the source automatically.</li>
+    <li>Licensed feeds carry <code>redistribution_allowed=false</code> until a written right exists.</li>
+  </ul>
+</div>
+{% endblock %}

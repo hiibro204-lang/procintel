@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: python -m pytest tests -q
+
+      - name: Connector self-tests (no network)
+        run: |
+          python -m scripts.run_connector --source gem_results --self-test
+          python -m scripts.run_connector --source gem_listing --self-test
+
+      - name: Seed and boot the app
+        run: |
+          python -m scripts.seed_demo --tenders 20
+          python -m scripts.ingest_fixture gem_results
+          python - <<'PY'
+          from fastapi.testclient import TestClient
+          from app.main import app
+          with TestClient(app) as c:
+              assert c.get("/api/v1/health").json()["status"] == "ok"
+              assert c.get("/api/v1/tenders?limit=1").json()["total"] >= 1
+              assert c.get("/api/v1/sources").json()["runnable"] >= 1
+              blocked = c.post("/api/v1/connectors/cppp_listing/run")
+              assert blocked.status_code == 403, "compliance gate must refuse a blocked source"
+          print("smoke test ok")
+          PY
