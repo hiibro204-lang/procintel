@@ -14,6 +14,10 @@ Built for InfiSource Corporation as an internal tool first, and architected for 
 
 ---
 
+**Live preview:** https://hiibro204-lang.github.io/procintel/ — every screen, rendered from the
+demo corpus. It is static, because GitHub Pages cannot run a Python server; the interactive
+app runs in [Codespaces](https://codespaces.new/hiibro204-lang/procintel) or locally.
+
 ## Status — what actually works
 
 This repository implements **Phases 0–4** of the blueprint (see `docs/`), which is a working internal
