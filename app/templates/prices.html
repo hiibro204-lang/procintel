@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% block title %}Price intelligence — Procurement Intelligence{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-semibold tracking-tight text-navy">Price intelligence</h1>
+<p class="mt-1 text-sm text-slate-500">
+  Comparable prices for a canonical product, by basis. Bases are never blended, and a
+  statistic is never shown without its sample size.
+</p>
+
+<div class="mt-5 grid gap-6 lg:grid-cols-4">
+  <aside class="rounded-lg border border-rule">
+    <div class="border-b border-rule px-4 py-3">
+      <h2 class="text-sm font-semibold text-navy">Products with prices</h2>
+    </div>
+    <ul class="max-h-[520px] divide-y divide-rule overflow-auto text-sm">
+      {% for p in products %}
+      <li>
+        <a href="/prices?product_id={{ p.id }}&basis={{ basis }}"
+           class="block px-4 py-2.5 hover:bg-mist {% if selected and p.id == selected.id %}bg-teal/5 border-l-2 border-teal{% endif %}">
+          <span class="text-slate-700">{{ p.canonical_name|truncate(46) }}</span>
+        </a>
+      </li>
+      {% else %}
+      <li class="px-4 py-6 text-center text-slate-500">No priced products yet.</li>
+      {% endfor %}
+    </ul>
+  </aside>
+
+  <section class="lg:col-span-3 space-y-6">
+    {% if selected and stats %}
+    <div class="rounded-lg border border-rule p-5">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 class="text-lg font-semibold text-navy">{{ selected.canonical_name }}</h2>
+          <p class="text-xs text-slate-500">Basis: <span class="font-medium text-slate-700">{{ stats.basis }}</span>
+            · coverage {{ stats.coverage_pct if stats.coverage_pct is not none else '—' }}%
+            · tier: {{ stats.tier }}</p>
+        </div>
+        <form method="get" class="flex items-center gap-2">
+          <input type="hidden" name="product_id" value="{{ selected.id }}">
+          <select name="basis" onchange="this.form.submit()"
+                  class="rounded border border-rule px-2 py-1.5 text-xs">
+            {% for b in ['awarded', 'l1_quote', 'l2_quote', 'l3_quote'] %}
+            <option value="{{ b }}" {% if b == basis %}selected{% endif %}>{{ b }}</option>
+            {% endfor %}
+          </select>
+        </form>
+      </div>
+
+      {% if stats.n == 0 %}
+        <p class="mt-4 rounded bg-mist p-4 text-sm text-slate-600">
+          No observations on this basis. Nothing is estimated here — switch basis or widen the corpus.
+        </p>
+      {% else %}
+      <div class="mt-4 grid gap-3 sm:grid-cols-4">
+        {% for label, value in [('Records', stats.n), ('Median', stats.median|inr),
+                                ('Lowest', stats.min|inr), ('Highest', stats.max|inr)] %}
+        <div class="rounded border border-rule bg-mist/60 p-3">
+          <p class="text-xs uppercase tracking-wider text-slate-500">{{ label }}</p>
+          <p class="mt-0.5 text-lg font-semibold text-navy">{{ value }}</p>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if stats.tier == 'distribution' %}
+      <div class="mt-4">
+        <p class="text-xs uppercase tracking-wider text-slate-500">Middle 80% of observations</p>
+        <div class="mt-2 h-3 w-full rounded bg-mist">
+          <div class="h-3 rounded bg-teal/40" style="margin-left: 0%; width: 100%;"></div>
+        </div>
+        <div class="mt-1 flex justify-between text-xs text-slate-600">
+          <span>{{ stats.p10|inr }} (p10)</span>
+          <span class="font-medium text-navy">{{ stats.median|inr }} (median)</span>
+          <span>{{ stats.p90|inr }} (p90)</span>
+        </div>
+      </div>
+      {% elif stats.warning %}
+      <p class="mt-4 rounded border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">{{ stats.warning }}</p>
+      {% endif %}
+
+      <div class="mt-5 overflow-hidden rounded border border-rule">
+        <table class="w-full text-sm">
+          <thead class="bg-mist text-left text-xs uppercase tracking-wider text-slate-500">
+            <tr><th class="px-3 py-2">Observed</th><th class="px-3 py-2">Tender</th>
+                <th class="px-3 py-2 text-right">Qty</th><th class="px-3 py-2 text-right">Unit price</th>
+                <th class="px-3 py-2 text-right">Normalised</th><th class="px-3 py-2">State</th></tr>
+          </thead>
+          <tbody class="divide-y divide-rule">
+            {% for o in stats.observations %}
+            <tr class="hover:bg-mist/60">
+              <td class="px-3 py-2 text-slate-600">{{ o.observed_at }}</td>
+              <td class="px-3 py-2"><a href="/tender/{{ o.tender_id }}" class="text-teal hover:underline">#{{ o.tender_id }}</a></td>
+              <td class="px-3 py-2 text-right text-slate-600">{{ o.quantity or '—' }}</td>
+              <td class="px-3 py-2 text-right text-slate-600">{{ o.unit_price|inr }}</td>
+              <td class="px-3 py-2 text-right font-medium text-navy">{{ o.normalised_unit_price|inr }}</td>
+              <td class="px-3 py-2 text-slate-600">{{ o.state or '—' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="rounded-lg border border-rule p-5">
+      <h2 class="text-sm font-semibold text-navy">Bid recommendation</h2>
+      <p class="text-xs text-slate-500">Every input and every step is shown. Nothing is hidden behind a score.</p>
+      <div class="mt-3 flex flex-wrap items-end gap-3">
+        <label><span class="block text-xs text-slate-500">Landed cost / unit (₹)</span>
+          <input id="cost" type="number" min="0" step="1" placeholder="12000"
+                 class="mt-1 w-36 rounded border border-rule px-3 py-2 text-sm"></label>
+        <label><span class="block text-xs text-slate-500">Target margin %</span>
+          <input id="margin" type="number" min="0" max="90" step="1" value="15"
+                 class="mt-1 w-28 rounded border border-rule px-3 py-2 text-sm"></label>
+        <label><span class="block text-xs text-slate-500">Stance</span>
+          <select id="stance" class="mt-1 rounded border border-rule px-3 py-2 text-sm">
+            <option value="aggressive">aggressive</option>
+            <option value="balanced" selected>balanced</option>
+            <option value="defensive">defensive</option>
+          </select></label>
+        <button onclick="recommend({{ selected.id }})"
+                class="rounded bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">Recommend</button>
+      </div>
+      <div id="rec-out" class="mt-4 text-sm"></div>
+    </div>
+
+    {% if comparables %}
+    <div class="rounded-lg border border-rule p-5">
+      <h2 class="text-sm font-semibold text-navy">Comparable set, by tier</h2>
+      <p class="text-xs text-slate-500">A comparison across tiers is weaker evidence, so the tiers are reported separately.</p>
+      <div class="mt-3 space-y-3">
+        {% for tier in comparables.tiers %}
+        <div class="rounded border border-rule">
+          <div class="flex items-center justify-between bg-mist px-3 py-2">
+            <span class="text-xs font-medium text-slate-700">Tier {{ tier.tier }} — {{ tier.label }}</span>
+            <span class="text-xs text-slate-500">n = {{ tier.n }}</span>
+          </div>
+          {% if tier.n %}
+          <ul class="divide-y divide-rule text-xs">
+            {% for o in tier.observations[:6] %}
+            <li class="flex justify-between px-3 py-1.5">
+              <span class="text-slate-600">{{ o.observed_at }} · {{ o.basis }} · qty {{ o.quantity or '—' }}</span>
+              <span class="font-medium text-navy">{{ o.normalised_unit_price|inr }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p class="px-3 py-2 text-xs text-slate-500">No observations in this tier.</p>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="rounded-lg border border-rule p-10 text-center text-slate-500">
+      No priced products yet. Run the seed script or ingest a source with published results.
+    </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function recommend(productId) {
+  const out = document.getElementById('rec-out');
+  out.innerHTML = '<p class="text-slate-500">Calculating…</p>';
+  const params = new URLSearchParams();
+  const cost = document.getElementById('cost').value;
+  if (cost) params.set('landed_cost', cost);
+  params.set('target_margin_pct', document.getElementById('margin').value);
+  params.set('competitive_stance', document.getElementById('stance').value);
+  const res = await fetch(`/api/v1/products/${productId}/recommend?${params}`, {method: 'POST'});
+  if (!res.ok) { out.innerHTML = '<p class="text-red-700">Request failed.</p>'; return; }
+  const d = await res.json();
+  if (d.range.mid === null) {
+    out.innerHTML = `<p class="rounded bg-mist p-3 text-slate-600">No recommendation available.
+      ${(d.notes||[]).join(' ')}</p>`;
+    return;
+  }
+  out.innerHTML = `
+    <div class="rounded border border-teal/30 bg-teal/5 p-3">
+      <p class="text-base font-semibold text-navy">
+        ${fmt(d.range.low)} – ${fmt(d.range.high)} <span class="text-sm font-normal text-slate-500">per unit
+        (mid ${fmt(d.range.mid)})</span></p>
+      <p class="mt-1 text-xs text-slate-600">Based on ${d.inputs.n_observations} awarded record(s);
+        confidence ${d.confidence}.</p>
+    </div>
+    <table class="mt-3 w-full text-xs">
+      <tbody class="divide-y divide-rule">
+        ${d.steps.map(s => `<tr><td class="py-1.5 pr-3 font-medium text-slate-700">${s.step}</td>
+          <td class="py-1.5 text-slate-600">${s.detail || ''}</td>
+          <td class="py-1.5 text-right text-navy">${s.value !== undefined ? fmt(s.value) : (s.factor !== undefined ? '×' + s.factor : '')}</td></tr>`).join('')}
+      </tbody>
+    </table>
+    ${(d.notes||[]).map(n => `<p class="mt-2 rounded bg-amber-50 p-2 text-xs text-amber-900">${n}</p>`).join('')}`;
+}
+function fmt(v) { return v === null || v === undefined ? '—' : '₹' + Number(v).toLocaleString('en-IN', {maximumFractionDigits: 0}); }
+</script>
+{% endblock %}

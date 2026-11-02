@@ -1,0 +1,85 @@
+<!doctype html>
+<!--
+  Fixture for the GeM bid-result parser.
+
+  This is a SYNTHETIC fixture. It reproduces the semantic structure of the public
+  bid-result page (bid-details block, technical evaluation table, financial
+  evaluation table) using invented bid numbers, sellers and prices. It exists so
+  the parser and its self-test can run without network access, and so a portal
+  redesign shows up as a failing assertion rather than a silent empty corpus.
+
+  Replace it with a captured real page before relying on it in production.
+-->
+<html>
+<head><title>Bid Result - GeM</title></head>
+<body>
+<div class="container">
+  <h3>1. BID DETAILS - GEM/2026/B/8069492</h3>
+  <div class="row">Bid Number : GEM/2026/B/8069492</div>
+  <div class="row">Bid Status : Awarded</div>
+  <div class="row">Quantity : 40</div>
+  <div class="row">Bid Validity (From End Date) : 30 ( Days)</div>
+  <div class="row">Bid Start Date / Time : 22-09-2026 17:25:38</div>
+  <div class="row">Bid End Date / Time : 03-10-2026 17:00:00</div>
+  <div class="row">Bid Opening Date / Time : 04-10-2026 17:00:00</div>
+  <div class="row">Items : Ergonomic Office Chair High Back Mesh with Lumbar Support</div>
+  <div class="row">Item Categories : Ergonomic Office Chair,Office Furniture</div>
+
+  <h4>Buyer Details</h4>
+  <div class="row">Name : Suresh Menon</div>
+  <div class="row">Address : Suresh Menon,buyer12.cg.mp@gembuyer.in,Directorate of Health Services,Bhopal,MADHYA PRADESH,462001,India,0755-2551234</div>
+  <div class="row">State : MADHYA PRADESH</div>
+  <div class="row">Department : Directorate of Health Services</div>
+  <div class="row">Organisation : N/a</div>
+  <div class="row">Office : Directorate of Health Services Bhopal</div>
+
+  <h3>2. TECHNICAL EVALUATION</h3>
+  <h5>List of Sellers Participated</h5>
+  <table class="table">
+    <tr>
+      <th>S.No.</th><th>Seller Name</th><th>Offered Item</th><th>Participated On</th>
+      <th>EMD Status</th><th>MSE/MII Status</th><th>Status</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>SHREEJI OFFICE SYSTEMS PRIVATE LIMITED</td>
+      <td>Make : GODREJ Model : PCH-7003</td>
+      <td>02-10-2026 17:45:29</td><td>Offline upload</td><td>MII</td><td>Qualified</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>DECCAN SEATING SOLUTIONS</td>
+      <td>Make : FEATHERLITE Model : FL-ERG-21</td>
+      <td>02-10-2026 16:09:00</td><td>Registered with designated Agency / Authority</td><td>MII MSE</td><td>Qualified</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>KAVERI TRADERS</td>
+      <td>Make : LOCAL Model : GEN-01</td>
+      <td>02-10-2026 18:00:25</td><td>Not submitted</td><td></td><td>Disqualified</td>
+    </tr>
+  </table>
+
+  <h3>3. FINANCIAL EVALUATION</h3>
+  <h5>List of Sellers Qualified Financially</h5>
+  <table class="table">
+    <tr><th>S.No.</th><th>Seller Name</th><th>Offered Item</th><th>Total Price</th><th>Rank</th></tr>
+    <tr>
+      <td>1</td><td>SHREEJI OFFICE SYSTEMS PRIVATE LIMITED (MII)</td>
+      <td>Item Categories : Ergonomic Office Chair,Office Furniture</td>
+      <td>&#8377; 620000.00</td><td>L1</td>
+    </tr>
+    <tr>
+      <td>2</td><td>DECCAN SEATING SOLUTIONS (MSE)</td>
+      <td>Item Categories : Ergonomic Office Chair,Office Furniture</td>
+      <td>&#8377; 648000.00</td><td>L2</td>
+    </tr>
+    <tr>
+      <td>3</td><td>VENKATESWARA FURNISHINGS</td>
+      <td>Item Categories : Ergonomic Office Chair,Office Furniture</td>
+      <td>&#8377; 665500.00</td><td>L3</td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>
