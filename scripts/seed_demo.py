@@ -124,6 +124,8 @@ def seed(db, n_tenders: int = 60, seed_value: int = 20261102) -> dict:
             published_at=dt.datetime.combine(published, dt.time(10, 0), tzinfo=dt.timezone.utc),
             closing_at=dt.datetime.combine(closing, dt.time(17, 0), tzinfo=dt.timezone.utc),
             status="awarded",
+            estimated_value=None,
+            estimated_value_is_published=False,
             portal_url=f"local://demo/tender/{100000 + i}",
             source_id=source.id,
             extraction_method="demo_seed",
@@ -199,6 +201,14 @@ def seed(db, n_tenders: int = 60, seed_value: int = 20261102) -> dict:
                     source_id=source.id, confidence=0.85,
                 ))
                 counts["observations"] += 1
+
+        # estimated value and EMD, as a real notice would publish them
+        estimate = round(l1_total * 1.12, 2)
+        tender.estimated_value = estimate
+        tender.estimated_value_is_published = True
+        tender.emd_amount = round(estimate * 0.02, 2)
+        tender.tender_fee = 500.0
+        db.add(tender)
 
         # award to L1
         winner = entities.upsert_supplier(db, chosen[0], source=source)
