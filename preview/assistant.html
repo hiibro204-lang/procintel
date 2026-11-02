@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assistant — Procurement Intelligence</title>
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="static/app.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C8102E'/><text x='16' y='23' font-family='Helvetica' font-size='18' font-weight='bold' fill='white' text-anchor='middle'>P</text></svg>">
+</head>
+<body>
+
+
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">P</span>
+      <span class="brand-name">Procurement Intelligence</span>
+      <span class="brand-tag">beta</span>
+    </a>
+
+    <nav class="nav">
+      
+        <a href="index.html" class="">Overview</a>
+      
+        <a href="search.html" class="">Tenders</a>
+      
+        <a href="#" class="">Prices</a>
+      
+        <a href="assistant.html" class="active">Assistant</a>
+      
+        <a href="sources.html" class="">Sources</a>
+      
+        <a href="settings.html" class="">Settings</a>
+      
+    </nav>
+
+    <div class="topbar-right">
+      
+        <a class="chip off" href="settings.html" title="Paste an API key to turn on model extraction and phrasing">
+          <span class="dot"></span> AI off
+        </a>
+      
+      <a class="btn sm" href="https://github.com/hiibro204-lang/procintel#api">API</a>
+    </div>
+  </div>
+</header>
+<div class="wrap" style="padding-top:14px">
+  <div class="alert info">
+    <span class="icon">i</span>
+    <div>
+      <strong>Static preview.</strong> Every screen below is real output from the app, rendered
+      against a seeded demo corpus. The interactive version — live API, assistant answers, saving
+      your API key — runs from the repository:
+      <a href="https://codespaces.new/hiibro204-lang/procintel">open it in GitHub Codespaces</a> or
+      <a href="https://github.com/hiibro204-lang/procintel">read the source</a>.
+    </div>
+  </div>
+</div>
+
+
+<main>
+  <div class="wrap">
+    
+
+<div class="between">
+  <div>
+    <p class="eyebrow">AI research assistant</p>
+    <h1 class="mt-1">Ask the corpus</h1>
+    <p class="muted mt-1" style="max-width:660px">
+      Answers are assembled from database rows, not from a model's memory. Every figure is traceable
+      to a record below it, and when the corpus holds nothing the assistant says so instead of estimating.
+    </p>
+  </div>
+  <div class="row" style="gap:8px">
+    
+      <a class="chip off" href="settings.html"><span class="dot"></span> template mode — add a key</a>
+    
+  </div>
+</div>
+
+<div class="card mt-4">
+  <div class="card-head">
+    <div class="card-title">Conversation</div>
+    <label class="row tiny muted" style="gap:6px; cursor:pointer">
+      <input type="checkbox" id="use-llm" checked style="accent-color:var(--red)">
+      phrase with the model (figures still verified)
+    </label>
+  </div>
+
+  <div class="thread" id="thread">
+    <div class="msg" style="color:var(--muted)">
+      <span class="tiny">Try one of these:</span>
+      <div class="mt-1" style="display:flex; flex-direction:column; gap:5px">
+        <button class="suggest tiny">What is the awarded price for an ergonomic office chair?</button>
+        <button class="suggest tiny">Which suppliers won office chair contracts?</button>
+        <button class="suggest tiny">What should our selling price be for an ergonomic chair?</button>
+        <button class="suggest tiny">Which organisations purchased office chairs?</button>
+      </div>
+    </div>
+  </div>
+
+  <form id="ask-form" class="chat-form">
+    <input id="question" class="input" required minlength="3" autocomplete="off"
+           placeholder="Ask about prices, tenders, suppliers or buyers…">
+    <button class="btn primary">Ask</button>
+  </form>
+</div>
+
+<p class="tiny muted mt-2">
+  The assistant has no ability to create, modify or delete anything — it reads only.
+</p>
+
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong style="color:var(--ink-2)">Every figure carries its source.</strong>
+       Prices are shown with their basis — awarded, L1/L2/L3 quote, estimated or market —
+       and bases are never blended in a statistic.</p>
+    <p>Individual officer names are not searchable or exportable. Tender documents remain the
+       property of the issuing department; this platform shows extracted facts and links to the origin.</p>
+  </div>
+</footer>
+
+
+<script>
+const thread = document.getElementById('thread');
+const form = document.getElementById('ask-form');
+const input = document.getElementById('question');
+
+document.querySelectorAll('.suggest').forEach(b => b.addEventListener('click', () => {
+  input.value = b.textContent.trim();
+  form.requestSubmit();
+}));
+
+const esc = s => (s ?? '').toString().replace(/[&<>]/g,
+  c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[c]));
+const money = v => (v === null || v === undefined) ? '—'
+  : '₹' + Number(v).toLocaleString('en-IN', {maximumFractionDigits: 0});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const question = input.value.trim();
+  if (!question) return;
+  input.value = '';
+  addBubble(question, 'user');
+  const pending = addBubble('Searching the corpus…', 'pending');
+  try {
+    const res = await fetch('/api/v1/assistant', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({question, use_llm: document.getElementById('use-llm').checked})
+    });
+    const d = await res.json();
+    pending.remove();
+    addAnswer(d);
+  } catch (err) {
+    pending.remove();
+    addBubble('Request failed: ' + err.message, 'error');
+  }
+});
+
+function addBubble(text, kind) {
+  const el = document.createElement('div');
+  el.className = 'msg ' + kind;
+  el.textContent = text;
+  thread.appendChild(el);
+  el.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  return el;
+}
+
+function addAnswer(d) {
+  const el = document.createElement('div');
+  el.className = 'msg';
+
+  const badges = [
+    d.declined
+      ? '<span class="badge amber">no data — declined</span>'
+      : `<span class="badge ${d.confidence === 'high' ? 'green' : (d.confidence === 'medium' ? '' : 'amber')}">confidence: ${esc(d.confidence)}</span>`,
+    `<span class="badge outline">intent: ${esc(d.intent)}</span>`,
+    d.llm && d.llm.used ? `<span class="badge outline">phrased by ${esc(d.llm.model)}</span>` : ''
+  ].filter(Boolean).join(' ');
+
+  let html = `<div class="answer">
+    <div class="row" style="gap:6px; flex-wrap:wrap; margin-bottom:8px">${badges}</div>
+    <p class="answer-text">${esc(d.direct_answer)}</p>`;
+
+  if (d.claims && d.claims.length) {
+    html += `<div class="block">
+      <div class="block-label">From the record</div>
+      <ul class="claims">${d.claims.map(c => `<li>${esc(c.text)}
+        ${c.evidence_ids.length ? `<span class="refs">[${c.evidence_ids.length} refs]</span>` : ''}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  if (d.analysis && d.analysis.statistics) {
+    const s = d.analysis.statistics;
+    html += `<div class="block">
+      <div class="block-label">Our analysis — derived, not from the record</div>
+      <p class="tiny" style="margin:0">n = ${s.n} · tier ${esc(s.tier)} · median ${money(s.median)} ·
+        range ${money(s.min)} – ${money(s.max)}</p>
+    </div>`;
+  }
+
+  if (d.analysis && d.analysis.steps) {
+    html += `<div class="block">
+      <div class="block-label">Calculation</div>
+      <ul class="claims">${d.analysis.steps.map(s =>
+        `<li><strong>${esc(s.step)}</strong> — ${esc(s.detail || '')}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  if (d.evidence && d.evidence.length) {
+    html += `<div class="block">
+      <div class="block-label">Evidence (${d.evidence.length})</div>
+      <div class="table-wrap" style="border:1px solid var(--line); border-radius:8px">
+        <table class="tbl">
+          <thead><tr><th>Record</th><th>Tender</th><th>Basis</th>
+            <th class="num">Unit price</th><th>Supplier</th></tr></thead>
+          <tbody>${d.evidence.slice(0, 12).map(e => `<tr>
+            <td class="tiny mono">${esc(e.portal_tender_id || e.id)}</td>
+            <td class="tiny">${e.tender_id ? `<a href="#">#${e.tender_id}</a>` : '—'}</td>
+            <td class="tiny">${esc(e.basis || e.type)}</td>
+            <td class="num tiny strong">${money(e.normalised_unit_price ?? e.total_price)}</td>
+            <td class="tiny">${esc(e.supplier || '—')}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  if (d.coverage) {
+    html += `<p class="tiny-sm muted" style="margin:10px 0 0">Coverage: ${esc(JSON.stringify(d.coverage))}</p>`;
+  }
+  if (d.notes && d.notes.length) {
+    html += d.notes.map(n => `<div class="alert warn mt-2"><span class="icon">!</span>
+      <div class="tiny">${esc(n)}</div></div>`).join('');
+  }
+
+  html += '</div>';
+  el.innerHTML = html;
+  thread.appendChild(el);
+  el.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+</script>
+
+
+<script>
+document.addEventListener('submit', function (e) {
+  e.preventDefault();
+  alert('This is a static preview. Run the app from the repository to use this feature.');
+}, true);
+document.addEventListener('click', function (e) {
+  const a = e.target.closest('a');
+  if (a && a.getAttribute('href') === '#') e.preventDefault();
+}, true);
+</script>
+</body>
+</html>

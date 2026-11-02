@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings — Procurement Intelligence</title>
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="static/app.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C8102E'/><text x='16' y='23' font-family='Helvetica' font-size='18' font-weight='bold' fill='white' text-anchor='middle'>P</text></svg>">
+</head>
+<body>
+
+
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">P</span>
+      <span class="brand-name">Procurement Intelligence</span>
+      <span class="brand-tag">beta</span>
+    </a>
+
+    <nav class="nav">
+      
+        <a href="index.html" class="">Overview</a>
+      
+        <a href="search.html" class="">Tenders</a>
+      
+        <a href="#" class="">Prices</a>
+      
+        <a href="assistant.html" class="">Assistant</a>
+      
+        <a href="sources.html" class="">Sources</a>
+      
+        <a href="settings.html" class="active">Settings</a>
+      
+    </nav>
+
+    <div class="topbar-right">
+      
+        <a class="chip off" href="settings.html" title="Paste an API key to turn on model extraction and phrasing">
+          <span class="dot"></span> AI off
+        </a>
+      
+      <a class="btn sm" href="https://github.com/hiibro204-lang/procintel#api">API</a>
+    </div>
+  </div>
+</header>
+<div class="wrap" style="padding-top:14px">
+  <div class="alert info">
+    <span class="icon">i</span>
+    <div>
+      <strong>Static preview.</strong> Every screen below is real output from the app, rendered
+      against a seeded demo corpus. The interactive version — live API, assistant answers, saving
+      your API key — runs from the repository:
+      <a href="https://codespaces.new/hiibro204-lang/procintel">open it in GitHub Codespaces</a> or
+      <a href="https://github.com/hiibro204-lang/procintel">read the source</a>.
+    </div>
+  </div>
+</div>
+
+
+<main>
+  <div class="wrap">
+    
+
+<div class="between">
+  <div>
+    <p class="eyebrow">Configuration</p>
+    <h1 class="mt-1">Settings</h1>
+    <p class="muted mt-1" style="max-width:640px">
+      Paste an API key and the platform starts using a model for document extraction and answer
+      phrasing. No redeploy, no environment file, no restart.
+    </p>
+  </div>
+  <div class="row">
+    
+      <span class="badge amber">not connected</span>
+    
+  </div>
+</div>
+
+
+
+<div class="grid g2 mt-4" style="align-items:start">
+
+  <!-- ================= AI connection ================= -->
+  <div class="card accent">
+    <div class="card-head">
+      <div>
+        <div class="card-title">AI connection</div>
+        <div class="card-sub">OpenRouter — one key, any model</div>
+      </div>
+      
+        <span class="chip off"><span class="dot"></span> off</span>
+      
+    </div>
+
+    <form method="post" action="#" class="card-body">
+      <div class="field">
+        <label class="label" for="api_key">API key</label>
+        <div class="row" style="gap:8px">
+          <input class="input mono grow" id="api_key" name="api_key" type="password"
+                 autocomplete="off" spellcheck="false"
+                 placeholder="sk-or-v1-…">
+          <button type="button" class="btn sm" id="reveal" aria-label="Show or hide the key">Show</button>
+        </div>
+        <p class="hint">
+          
+            Paste the whole key — it starts with <code>sk-or-</code>. Get one at
+            <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a>.
+          
+        </p>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="label" for="model_extraction">Extraction model</label>
+          <input class="input mono" id="model_extraction" name="model_extraction" list="model-list"
+                 value="google/gemini-2.0-flash-001" spellcheck="false">
+          <p class="hint">Bulk document reading. Cheap and fast is right here.</p>
+        </div>
+        <div class="field">
+          <label class="label" for="model_assistant">Assistant model</label>
+          <input class="input mono" id="model_assistant" name="model_assistant" list="model-list"
+                 value="anthropic/claude-3.5-haiku" spellcheck="false">
+          <p class="hint">Phrases answers over verified facts. Stronger is better.</p>
+        </div>
+      </div>
+
+      <datalist id="model-list">
+        <option value="aion-labs/aion-3.5">AionLabs: Aion 3.5</option><option value="aion-labs/aion-3.5-mini">AionLabs: Aion 3.5 Mini</option><option value="aion-labs/aion-2.0">AionLabs: Aion-2.0</option><option value="aion-labs/aion-3.0">AionLabs: Aion-3.0</option><option value="aion-labs/aion-3.0-mini">AionLabs: Aion-3.0-Mini</option><option value="aion-labs/aion-rp-llama-3.1-8b">AionLabs: Aion-RP 1.0 (8B)</option><option value="amazon/nova-2-lite-v1">Amazon: Nova 2 Lite</option><option value="amazon/nova-lite-v1">Amazon: Nova Lite 1.0</option><option value="amazon/nova-micro-v1">Amazon: Nova Micro 1.0</option><option value="amazon/nova-premier-v1">Amazon: Nova Premier 1.0</option><option value="amazon/nova-pro-v1">Amazon: Nova Pro 1.0</option><option value="anthropic/claude-fable-5">Anthropic: Claude Fable 5</option><option value="anthropic/claude-fable-5:batch">Anthropic: Claude Fable 5 (batch)</option><option value="anthropic/claude-fable-5.1">Anthropic: Claude Fable 5.1</option><option value="anthropic/claude-fable-5.1:batch">Anthropic: Claude Fable 5.1 (batch)</option><option value="~anthropic/claude-fable-latest">Anthropic: Claude Fable Latest</option><option value="anthropic/claude-haiku-4.5">Anthropic: Claude Haiku 4.5</option><option value="anthropic/claude-haiku-4.5:batch">Anthropic: Claude Haiku 4.5 (batch)</option><option value="anthropic/claude-haiku-5.5">Anthropic: Claude Haiku 5.5</option><option value="anthropic/claude-haiku-5.5:batch">Anthropic: Claude Haiku 5.5 (batch)</option><option value="~anthropic/claude-haiku-latest">Anthropic: Claude Haiku Latest</option><option value="anthropic/claude-opus-4.1">Anthropic: Claude Opus 4.1</option><option value="anthropic/claude-opus-4.1:batch">Anthropic: Claude Opus 4.1 (batch)</option><option value="anthropic/claude-opus-4.5">Anthropic: Claude Opus 4.5</option><option value="anthropic/claude-opus-4.5:batch">Anthropic: Claude Opus 4.5 (batch)</option><option value="anthropic/claude-opus-4.6">Anthropic: Claude Opus 4.6</option><option value="anthropic/claude-opus-4.6:batch">Anthropic: Claude Opus 4.6 (batch)</option><option value="anthropic/claude-opus-4.7">Anthropic: Claude Opus 4.7</option><option value="anthropic/claude-opus-4.7:batch">Anthropic: Claude Opus 4.7 (batch)</option><option value="anthropic/claude-opus-4.8">Anthropic: Claude Opus 4.8</option><option value="anthropic/claude-opus-4.8:batch">Anthropic: Claude Opus 4.8 (batch)</option><option value="anthropic/claude-opus-5">Anthropic: Claude Opus 5</option><option value="anthropic/claude-opus-5:batch">Anthropic: Claude Opus 5 (batch)</option><option value="anthropic/claude-opus-5.5">Anthropic: Claude Opus 5.5</option><option value="anthropic/claude-opus-5.5:batch">Anthropic: Claude Opus 5.5 (batch)</option><option value="~anthropic/claude-opus-latest">Anthropic: Claude Opus Latest</option><option value="anthropic/claude-sonnet-4.5">Anthropic: Claude Sonnet 4.5</option><option value="anthropic/claude-sonnet-4.5:batch">Anthropic: Claude Sonnet 4.5 (batch)</option><option value="anthropic/claude-sonnet-4.6">Anthropic: Claude Sonnet 4.6</option><option value="anthropic/claude-sonnet-4.6:batch">Anthropic: Claude Sonnet 4.6 (batch)</option><option value="anthropic/claude-sonnet-5">Anthropic: Claude Sonnet 5</option><option value="anthropic/claude-sonnet-5:batch">Anthropic: Claude Sonnet 5 (batch)</option><option value="anthropic/claude-sonnet-5.5">Anthropic: Claude Sonnet 5.5</option><option value="anthropic/claude-sonnet-5.5:batch">Anthropic: Claude Sonnet 5.5 (batch)</option><option value="~anthropic/claude-sonnet-latest">Anthropic: Claude Sonnet Latest</option><option value="openrouter/auto">Auto Router</option><option value="openrouter/auto-beta">Auto Router (Beta)</option><option value="openrouter/bodybuilder">Body Builder (beta)</option><option value="bytedance-seed/seed-1.6">ByteDance Seed: Seed 1.6</option><option value="bytedance-seed/seed-1.6-flash">ByteDance Seed: Seed 1.6 Flash</option><option value="bytedance-seed/seed-2-1-turbo">ByteDance Seed: Seed 2.1 Turbo</option><option value="bytedance-seed/seed-2.0-code">ByteDance Seed: Seed-2.0-Code</option><option value="bytedance-seed/seed-2.0-lite">ByteDance Seed: Seed-2.0-Lite</option><option value="bytedance-seed/seed-2.0-mini">ByteDance Seed: Seed-2.0-Mini</option><option value="bytedance/ui-tars-1.5-7b">ByteDance: UI-TARS 7B </option><option value="cohere/command-a">Cohere: Command A</option><option value="cohere/command-a-plus">Cohere: Command A+</option><option value="cohere/command-r-08-2024">Cohere: Command R (08-2024)</option><option value="cohere/command-r-plus-08-2024">Cohere: Command R+ (08-2024)</option><option value="cohere/command-r7b-12-2024">Cohere: Command R7B (12-2024)</option><option value="cohere/north-mini-code:free">Cohere: North Mini Code (free)</option><option value="~deepseek/deepseek-flash-latest">DeepSeek: DeepSeek Flash Latest</option><option value="~deepseek/deepseek-pro-latest">DeepSeek: DeepSeek Pro Latest</option><option value="deepseek/deepseek-chat">DeepSeek: DeepSeek V3</option><option value="deepseek/deepseek-chat-v3-0324">DeepSeek: DeepSeek V3 0324</option><option value="deepseek/deepseek-chat-v3.1">DeepSeek: DeepSeek V3.1</option><option value="deepseek/deepseek-v3.1-terminus">DeepSeek: DeepSeek V3.1 Terminus</option><option value="deepseek/deepseek-v3.2">DeepSeek: DeepSeek V3.2</option><option value="deepseek/deepseek-v3.2-exp">DeepSeek: DeepSeek V3.2 Exp</option><option value="deepseek/deepseek-v4-flash">DeepSeek: DeepSeek V4 Flash 0423</option><option value="deepseek/deepseek-v4-flash-0731">DeepSeek: DeepSeek V4 Flash 0731</option><option value="~deepseek/deepseek-v4-flash-latest">DeepSeek: DeepSeek V4 Flash Latest</option><option value="deepseek/deepseek-v4-flash-vision-exp">DeepSeek: DeepSeek V4 Flash Vision Exp</option><option value="deepseek/deepseek-v4-pro">DeepSeek: DeepSeek V4 Pro 0423</option><option value="deepseek/deepseek-v4-pro-0813">DeepSeek: DeepSeek V4 Pro 0813</option><option value="deepseek/deepseek-v4.1-flash">DeepSeek: DeepSeek V4.1 Flash</option><option value="deepseek/deepseek-v4.1-flash:batch">DeepSeek: DeepSeek V4.1 Flash (batch)</option><option value="deepseek/deepseek-v4.1-flash-1017">DeepSeek: DeepSeek V4.1 Flash 1017</option><option value="deepseek/deepseek-r1-0528">DeepSeek: R1 0528</option><option value="dots-studio/dots-3-note-preview:free">Dots Studio: Dots3-Note Preview (free)</option><option value="elorian/glimpse">Elorian: Glimpse</option><option value="fireworks/ember-1">Fireworks: Ember-1</option><option value="openrouter/free">Free Models Router</option><option value="google/gemini-2.5-flash">Google: Gemini 2.5 Flash</option><option value="google/gemini-2.5-flash-lite">Google: Gemini 2.5 Flash Lite</option><option value="google/gemini-2.5-pro">Google: Gemini 2.5 Pro</option><option value="google/gemini-2.5-pro-preview">Google: Gemini 2.5 Pro Preview 06-05</option><option value="google/gemini-3-flash-preview">Google: Gemini 3 Flash Preview</option><option value="google/gemini-3-flash-preview:batch">Google: Gemini 3 Flash Preview (batch)</option><option value="google/gemini-3.1-flash-lite">Google: Gemini 3.1 Flash Lite</option><option value="google/gemini-3.1-flash-lite:batch">Google: Gemini 3.1 Flash Lite (batch)</option><option value="google/gemini-3.1-flash-lite-preview">Google: Gemini 3.1 Flash Lite Preview</option><option value="google/gemini-3.1-pro-preview">Google: Gemini 3.1 Pro Preview</option><option value="google/gemini-3.1-pro-preview:batch">Google: Gemini 3.1 Pro Preview (batch)</option><option value="google/gemini-3.1-pro-preview-customtools">Google: Gemini 3.1 Pro Preview Custom Tools</option><option value="google/gemini-3.5-flash">Google: Gemini 3.5 Flash</option><option value="google/gemini-3.5-flash:batch">Google: Gemini 3.5 Flash (batch)</option><option value="google/gemini-3.5-flash-lite">Google: Gemini 3.5 Flash Lite</option><option value="google/gemini-3.5-flash-lite:batch">Google: Gemini 3.5 Flash Lite (batch)</option><option value="google/gemini-3.6-flash">Google: Gemini 3.6 Flash</option><option value="google/gemini-3.6-flash:batch">Google: Gemini 3.6 Flash (batch)</option><option value="google/gemini-3.7-flash">Google: Gemini 3.7 Flash</option><option value="google/gemini-3.7-flash:batch">Google: Gemini 3.7 Flash (batch)</option><option value="google/gemini-3.8-flash">Google: Gemini 3.8 Flash</option><option value="google/gemini-3.8-flash:batch">Google: Gemini 3.8 Flash (batch)</option><option value="google/gemini-4-argon">Google: Gemini 4 Argon</option><option value="google/gemini-4-argon:batch">Google: Gemini 4 Argon (batch)</option><option value="~google/gemini-flash-latest">Google: Gemini Flash Latest</option><option value="~google/gemini-pro-latest">Google: Gemini Pro Latest</option><option value="google/gemma-2-27b-it">Google: Gemma 2 27B</option><option value="google/gemma-3-12b-it">Google: Gemma 3 12B</option><option value="google/gemma-3-27b-it">Google: Gemma 3 27B</option><option value="google/gemma-3-4b-it">Google: Gemma 3 4B</option><option value="google/gemma-4-26b-a4b-it">Google: Gemma 4 26B A4B </option><option value="google/gemma-4-26b-a4b-it:free">Google: Gemma 4 26B A4B  (free)</option><option value="google/gemma-4-31b-it">Google: Gemma 4 31B</option><option value="google/gemma-4-31b-it:free">Google: Gemma 4 31B (free)</option><option value="google/lyria-3-clip-preview">Google: Lyria 3 Clip Preview</option><option value="google/lyria-3-pro-preview">Google: Lyria 3 Pro Preview</option><option value="google/gemini-2.5-flash-image">Google: Nano Banana (Gemini 2.5 Flash Image)</option><option value="google/gemini-3.1-flash-image-preview">Google: Nano Banana 2 (Gemini 3.1 Flash Image Preview)</option><option value="google/gemini-3.1-flash-image">Google: Nano Banana 2 (Gemini 3.1 Flash Image)</option><option value="google/gemini-3.1-flash-lite-image">Google: Nano Banana 2 Lite (Gemini 3.1 Flash Lite Image)</option><option value="google/gemini-nano-banana-2.1">Google: Nano Banana 2.1</option><option value="google/gemini-3-pro-image-preview">Google: Nano Banana Pro (Gemini 3 Pro Image Preview)</option><option value="google/gemini-3-pro-image">Google: Nano Banana Pro (Gemini 3 Pro Image)</option><option value="ibm-granite/granite-4.2-8b">IBM: Granite 4.2 8B</option><option value="inception/mercury-2">Inception: Mercury 2</option><option value="inception/mercury-2.5">Inception: Mercury 2.5</option><option value="inception/mercury-3">Inception: Mercury 3</option><option value="inclusionai/ling-3.0-flash">inclusionAI: Ling 3.0 Flash</option><option value="inclusionai/ling-3.0-flash-vl">inclusionAI: Ling 3.0 Flash VL</option><option value="inclusionai/ling-3.1-flash">inclusionAI: Ling 3.1 Flash</option><option value="inference-net/schematron-v2-small">Inference.net: Schematron V2 Small</option><option value="inference-net/schematron-v2-turbo">Inference.net: Schematron V2 Turbo</option><option value="liquid/lfm-2.5-2.6b">LiquidAI: LFM2.5-2.6B</option><option value="liquid/lfm-2.5-2.6b:free">LiquidAI: LFM2.5-2.6B (free)</option><option value="liquid/lfm-2.5-24b-a2b">LiquidAI: LFM2.5-24B-A2B</option><option value="anthracite-org/magnum-v4-72b">Magnum v4 72B</option><option value="mancer/weaver">Mancer: Weaver (alpha)</option><option value="meituan/longcat-2.0">Meituan: LongCat 2.0</option><option value="meta-llama/llama-3.1-70b-instruct">Meta: Llama 3.1 70B Instruct</option><option value="meta-llama/llama-3.1-8b-instruct">Meta: Llama 3.1 8B Instruct</option><option value="meta-llama/llama-3.2-1b-instruct">Meta: Llama 3.2 1B Instruct</option><option value="meta-llama/llama-3.2-3b-instruct">Meta: Llama 3.2 3B Instruct</option><option value="meta-llama/llama-3.3-70b-instruct">Meta: Llama 3.3 70B Instruct</option><option value="meta-llama/llama-4-maverick">Meta: Llama 4 Maverick</option><option value="meta-llama/llama-4-scout">Meta: Llama 4 Scout</option><option value="meta-llama/llama-guard-4-12b">Meta: Llama Guard 4 12B</option><option value="meta/muse-glimmer-30b">Meta: Muse Glimmer 30B</option><option value="meta/muse-spark-1.1">Meta: Muse Spark 1.1</option><option value="meta/muse-spark-1.2">Meta: Muse Spark 1.2</option><option value="meta/muse-spark-1.2-contributor">Meta: Muse Spark 1.2 Contributor</option><option value="meta/muse-spark-1.3">Meta: Muse Spark 1.3</option><option value="meta/muse-spark-1.3-contributor">Meta: Muse Spark 1.3 Contributor</option><option value="meta/muse-spark-open">Meta: Muse Spark Open</option><option value="meta/muse-wonder">Meta: Muse Wonder</option><option value="microsoft/phi-4">Microsoft: Phi 4</option><option value="minimax/minimax-m1">MiniMax: MiniMax M1</option><option value="minimax/minimax-m2">MiniMax: MiniMax M2</option><option value="minimax/minimax-m2-her">MiniMax: MiniMax M2-her</option><option value="minimax/minimax-m2.1">MiniMax: MiniMax M2.1</option><option value="minimax/minimax-m2.5">MiniMax: MiniMax M2.5</option><option value="minimax/minimax-m2.7">MiniMax: MiniMax M2.7</option><option value="minimax/minimax-m3">MiniMax: MiniMax M3</option><option value="minimax/minimax-m3.1-flash">MiniMax: MiniMax M3.1 Flash</option><option value="minimax/minimax-01">MiniMax: MiniMax-01</option><option value="mistralai/mistral-large">Mistral Large</option><option value="mistralai/mistral-large-2407">Mistral Large 2407</option><option value="mistralai/codestral-2508">Mistral: Codestral 2508</option><option value="mistralai/devstral-2512">Mistral: Devstral 2 2512</option><option value="mistralai/ministral-14b-2512">Mistral: Ministral 3 14B 2512</option><option value="mistralai/ministral-3b-2512">Mistral: Ministral 3 3B 2512</option><option value="mistralai/ministral-8b-2512">Mistral: Ministral 3 8B 2512</option><option value="mistralai/mistral-large-2512">Mistral: Mistral Large 3 2512</option><option value="mistralai/mistral-large-4-0">Mistral: Mistral Large 4</option><option value="mistralai/mistral-medium-3">Mistral: Mistral Medium 3</option><option value="mistralai/mistral-medium-3.1">Mistral: Mistral Medium 3.1</option><option value="mistralai/mistral-medium-3-5">Mistral: Mistral Medium 3.5</option><option value="mistralai/mistral-medium-3-5:batch">Mistral: Mistral Medium 3.5 (batch)</option><option value="mistralai/mistral-nemo">Mistral: Mistral Nemo</option><option value="mistralai/mistral-small-24b-instruct-2501">Mistral: Mistral Small 3</option><option value="mistralai/mistral-small-3.1-24b-instruct">Mistral: Mistral Small 3.1 24B</option><option value="mistralai/mistral-small-3.2-24b-instruct">Mistral: Mistral Small 3.2 24B</option><option value="mistralai/mistral-small-2603">Mistral: Mistral Small 4</option><option value="mistralai/mixtral-8x22b-instruct">Mistral: Mixtral 8x22B Instruct</option><option value="mistralai/mistral-saba">Mistral: Saba</option><option value="mistralai/voxtral-small-24b-2507">Mistral: Voxtral Small 24B 2507</option><option value="moondream/moondream3-preview">Moondream: Moondream 3 Preview</option><option value="moondream/moondream3.1-9b-a2b">Moondream: Moondream 3.1</option><option value="moonshotai/kimi-k2">MoonshotAI: Kimi K2 0711</option><option value="moonshotai/kimi-k2-0905">MoonshotAI: Kimi K2 0905</option><option value="moonshotai/kimi-k2-thinking">MoonshotAI: Kimi K2 Thinking</option><option value="moonshotai/kimi-k2.5">MoonshotAI: Kimi K2.5</option><option value="moonshotai/kimi-k2.6">MoonshotAI: Kimi K2.6</option><option value="moonshotai/kimi-k2.7-code">MoonshotAI: Kimi K2.7 Code</option><option value="moonshotai/kimi-k3">MoonshotAI: Kimi K3</option><option value="moonshotai/kimi-k3:batch">MoonshotAI: Kimi K3 (batch)</option><option value="moonshotai/kimi-k3.1-pro">MoonshotAI: Kimi K3.1 Pro</option><option value="~moonshotai/kimi-latest">MoonshotAI: Kimi Latest</option><option value="morph/morph-v3-fast">Morph: Morph V3 Fast</option><option value="morph/morph-v3-large">Morph: Morph V3 Large</option><option value="gryphe/mythomax-l2-13b">MythoMax 13B</option><option value="nex-agi/nex-n2.5-mini">Nex AGI: Nex-N2.5-Mini</option><option value="nex-agi/nex-n2.5-pro">Nex AGI: Nex-N2.5-Pro</option><option value="nousresearch/hermes-4-405b">Nous: Hermes 4 405B</option><option value="nvidia/nemotron-3-nano-30b-a3b">NVIDIA: Nemotron 3 Nano 30B A3B</option><option value="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free">NVIDIA: Nemotron 3 Nano Omni (free)</option><option value="nvidia/nemotron-3-super-120b-a12b">NVIDIA: Nemotron 3 Super</option><option value="nvidia/nemotron-3-ultra-550b-a55b">NVIDIA: Nemotron 3 Ultra</option><option value="nvidia/nemotron-3-ultra-550b-a55b:free">NVIDIA: Nemotron 3 Ultra (free)</option><option value="nvidia/nemotron-3.5-content-safety">NVIDIA: Nemotron 3.5 Content Safety</option><option value="nvidia/nemotron-3.5-content-safety:free">NVIDIA: Nemotron 3.5 Content Safety (free)</option><option value="nvidia/nemotron-3.5-lightning">NVIDIA: Nemotron 3.5 Lightning</option><option value="nvidia/nemotron-3.5-lightning:free">NVIDIA: Nemotron 3.5 Lightning (free)</option><option value="nvidia/nemotron-3.5-super-vl">NVIDIA: Nemotron 3.5 Super VL</option><option value="nvidia/nemotron-3.5-super-vl:free">NVIDIA: Nemotron 3.5 Super VL (free)</option><option value="nvidia/switchyard">NVIDIA: Switchyard</option><option value="~openai/gpt-astra-latest">OpenAI: GPT Astra Latest</option><option value="openai/gpt-audio">OpenAI: GPT Audio</option><option value="openai/gpt-audio-mini">OpenAI: GPT Audio Mini</option><option value="openai/gpt-chat-latest">OpenAI: GPT Chat Latest</option><option value="~openai/gpt-luna-latest">OpenAI: GPT Luna Latest</option><option value="~openai/gpt-mini-latest">OpenAI: GPT Mini Latest</option><option value="~openai/gpt-sol-latest">OpenAI: GPT Sol Latest</option><option value="~openai/gpt-terra-latest">OpenAI: GPT Terra Latest</option><option value="openai/gpt-3.5-turbo-0613">OpenAI: GPT-3.5 Turbo (older v0613)</option><option value="openai/gpt-3.5-turbo-16k">OpenAI: GPT-3.5 Turbo 16k</option><option value="openai/gpt-4">OpenAI: GPT-4</option><option value="openai/gpt-4-turbo:batch">OpenAI: GPT-4 Turbo (batch)</option><option value="openai/gpt-4.1">OpenAI: GPT-4.1</option><option value="openai/gpt-4.1:batch">OpenAI: GPT-4.1 (batch)</option><option value="openai/gpt-4.1-mini">OpenAI: GPT-4.1 Mini</option><option value="openai/gpt-4.1-mini:batch">OpenAI: GPT-4.1 Mini (batch)</option><option value="openai/gpt-4.1-nano">OpenAI: GPT-4.1 Nano</option><option value="openai/gpt-4.1-nano:batch">OpenAI: GPT-4.1 Nano (batch)</option><option value="openai/gpt-4o">OpenAI: GPT-4o</option><option value="openai/gpt-4o-2024-05-13">OpenAI: GPT-4o (2024-05-13)</option><option value="openai/gpt-4o-2024-08-06">OpenAI: GPT-4o (2024-08-06)</option><option value="openai/gpt-4o-2024-11-20">OpenAI: GPT-4o (2024-11-20)</option><option value="openai/gpt-4o:batch">OpenAI: GPT-4o (batch)</option><option value="openai/gpt-4o-mini">OpenAI: GPT-4o-mini</option><option value="openai/gpt-4o-mini-2024-07-18">OpenAI: GPT-4o-mini (2024-07-18)</option><option value="openai/gpt-4o-mini:batch">OpenAI: GPT-4o-mini (batch)</option><option value="openai/gpt-5">OpenAI: GPT-5</option><option value="openai/gpt-5:batch">OpenAI: GPT-5 (batch)</option><option value="openai/gpt-5-image">OpenAI: GPT-5 Image</option><option value="openai/gpt-5-image-mini">OpenAI: GPT-5 Image Mini</option><option value="openai/gpt-5-mini">OpenAI: GPT-5 Mini</option><option value="openai/gpt-5-mini:batch">OpenAI: GPT-5 Mini (batch)</option><option value="openai/gpt-5-nano">OpenAI: GPT-5 Nano</option><option value="openai/gpt-5-nano:batch">OpenAI: GPT-5 Nano (batch)</option><option value="openai/gpt-5-pro">OpenAI: GPT-5 Pro</option><option value="openai/gpt-5-pro:batch">OpenAI: GPT-5 Pro (batch)</option><option value="openai/gpt-5.1">OpenAI: GPT-5.1</option><option value="openai/gpt-5.1:batch">OpenAI: GPT-5.1 (batch)</option><option value="openai/gpt-5.1-codex">OpenAI: GPT-5.1-Codex</option><option value="openai/gpt-5.1-codex-max">OpenAI: GPT-5.1-Codex-Max</option><option value="openai/gpt-5.1-codex-mini">OpenAI: GPT-5.1-Codex-Mini</option><option value="openai/gpt-5.2">OpenAI: GPT-5.2</option><option value="openai/gpt-5.2:batch">OpenAI: GPT-5.2 (batch)</option><option value="openai/gpt-5.2-chat">OpenAI: GPT-5.2 Chat</option><option value="openai/gpt-5.2-pro">OpenAI: GPT-5.2 Pro</option><option value="openai/gpt-5.2-pro:batch">OpenAI: GPT-5.2 Pro (batch)</option><option value="openai/gpt-5.2-codex">OpenAI: GPT-5.2-Codex</option><option value="openai/gpt-5.3-codex">OpenAI: GPT-5.3-Codex</option><option value="openai/gpt-5.4">OpenAI: GPT-5.4</option><option value="openai/gpt-5.4:batch">OpenAI: GPT-5.4 (batch)</option><option value="openai/gpt-5.4-image-2">OpenAI: GPT-5.4 Image 2</option><option value="openai/gpt-5.4-mini">OpenAI: GPT-5.4 Mini</option><option value="openai/gpt-5.4-mini:batch">OpenAI: GPT-5.4 Mini (batch)</option><option value="openai/gpt-5.4-nano">OpenAI: GPT-5.4 Nano</option><option value="openai/gpt-5.4-nano:batch">OpenAI: GPT-5.4 Nano (batch)</option><option value="openai/gpt-5.4-pro">OpenAI: GPT-5.4 Pro</option><option value="openai/gpt-5.4-pro:batch">OpenAI: GPT-5.4 Pro (batch)</option><option value="openai/gpt-5.5">OpenAI: GPT-5.5</option><option value="openai/gpt-5.5:batch">OpenAI: GPT-5.5 (batch)</option><option value="openai/gpt-5.5-pro">OpenAI: GPT-5.5 Pro</option><option value="openai/gpt-5.5-pro:batch">OpenAI: GPT-5.5 Pro (batch)</option><option value="openai/gpt-5.6-luna">OpenAI: GPT-5.6 Luna</option><option value="openai/gpt-5.6-luna:batch">OpenAI: GPT-5.6 Luna (batch)</option><option value="openai/gpt-5.6-luna-pro">OpenAI: GPT-5.6 Luna Pro</option><option value="openai/gpt-5.6-luna-pro:batch">OpenAI: GPT-5.6 Luna Pro (batch)</option><option value="openai/gpt-5.6-sol">OpenAI: GPT-5.6 Sol</option><option value="openai/gpt-5.6-sol:batch">OpenAI: GPT-5.6 Sol (batch)</option><option value="openai/gpt-5.6-sol-pro">OpenAI: GPT-5.6 Sol Pro</option><option value="openai/gpt-5.6-sol-pro:batch">OpenAI: GPT-5.6 Sol Pro (batch)</option><option value="openai/gpt-5.6-terra">OpenAI: GPT-5.6 Terra</option><option value="openai/gpt-5.6-terra:batch">OpenAI: GPT-5.6 Terra (batch)</option><option value="openai/gpt-5.6-terra-pro">OpenAI: GPT-5.6 Terra Pro</option><option value="openai/gpt-5.6-terra-pro:batch">OpenAI: GPT-5.6 Terra Pro (batch)</option><option value="openai/gpt-6-astra">OpenAI: GPT-6 Astra</option><option value="openai/gpt-6-astra:batch">OpenAI: GPT-6 Astra (batch)</option><option value="openai/gpt-6-astra-pro">OpenAI: GPT-6 Astra Pro</option><option value="openai/gpt-6-astra-pro:batch">OpenAI: GPT-6 Astra Pro (batch)</option><option value="openai/gpt-6-luna">OpenAI: GPT-6 Luna</option><option value="openai/gpt-6-luna:batch">OpenAI: GPT-6 Luna (batch)</option><option value="openai/gpt-6-luna-pro">OpenAI: GPT-6 Luna Pro</option><option value="openai/gpt-6-luna-pro:batch">OpenAI: GPT-6 Luna Pro (batch)</option><option value="openai/gpt-6-sol">OpenAI: GPT-6 Sol</option><option value="openai/gpt-6-sol:batch">OpenAI: GPT-6 Sol (batch)</option><option value="openai/gpt-6-sol-pro">OpenAI: GPT-6 Sol Pro</option><option value="openai/gpt-6-sol-pro:batch">OpenAI: GPT-6 Sol Pro (batch)</option><option value="openai/gpt-6.1-sol">OpenAI: GPT-6.1 Sol</option><option value="openai/gpt-6.1-sol:batch">OpenAI: GPT-6.1 Sol (batch)</option><option value="openai/gpt-6.1-sol-pro">OpenAI: GPT-6.1 Sol Pro</option><option value="openai/gpt-6.1-sol-pro:batch">OpenAI: GPT-6.1 Sol Pro (batch)</option><option value="openai/gpt-6.1-terra">OpenAI: GPT-6.1 Terra</option><option value="openai/gpt-6.1-terra:batch">OpenAI: GPT-6.1 Terra (batch)</option><option value="openai/gpt-6.1-terra-pro">OpenAI: GPT-6.1 Terra Pro</option><option value="openai/gpt-6.1-terra-pro:batch">OpenAI: GPT-6.1 Terra Pro (batch)</option><option value="openai/gpt-oss-120b">OpenAI: gpt-oss-120b</option><option value="openai/gpt-oss-120b:batch">OpenAI: gpt-oss-120b (batch)</option><option value="openai/gpt-oss-20b">OpenAI: gpt-oss-20b</option><option value="openai/gpt-oss-20b:batch">OpenAI: gpt-oss-20b (batch)</option><option value="openai/gpt-oss-safeguard-20b">OpenAI: gpt-oss-safeguard-20b</option><option value="openai/o3">OpenAI: o3</option><option value="openai/o3:batch">OpenAI: o3 (batch)</option><option value="openai/o3-mini:batch">OpenAI: o3 Mini (batch)</option><option value="openai/o3-pro">OpenAI: o3 Pro</option><option value="openai/o4-mini:batch">OpenAI: o4 Mini (batch)</option><option value="openrouter/fusion">OpenRouter: Fusion</option><option value="unbiased/pareto-26.10">Pareto 26.10</option><option value="unbiased/pareto-26.9">Pareto 26.9</option><option value="openrouter/pareto-code">Pareto Code Router</option><option value="~unbiased/pareto-latest">Pareto Latest</option><option value="particle-ai/particle-1">Particle AI: Particle-1</option><option value="perceptron/perceptron-mk1">Perceptron: Perceptron Mk1</option><option value="perceptron/perceptron-mk1.5">Perceptron: Perceptron Mk1.5</option><option value="perplexity/sonar">Perplexity: Sonar</option><option value="perplexity/sonar-deep-research">Perplexity: Sonar Deep Research</option><option value="perplexity/sonar-pro">Perplexity: Sonar Pro</option><option value="perplexity/sonar-pro-search">Perplexity: Sonar Pro Search</option><option value="perplexity/sonar-reasoning-pro">Perplexity: Sonar Reasoning Pro</option><option value="prism-ml/ternary-bonsai-2-27b">PrismML: Ternary Bonsai 2 27B</option><option value="prism-ml/ternary-bonsai-2-9b">PrismML: Ternary Bonsai 2 9B</option><option value="qwen/qwen-2.5-72b-instruct">Qwen2.5 72B Instruct</option><option value="qwen/qwen-2.5-coder-32b-instruct">Qwen2.5 Coder 32B Instruct</option><option value="qwen/qwen-plus">Qwen: Qwen-Plus</option><option value="qwen/qwen-2.5-7b-instruct">Qwen: Qwen2.5 7B Instruct</option><option value="qwen/qwen2.5-vl-72b-instruct">Qwen: Qwen2.5 VL 72B Instruct</option><option value="qwen/qwen3-14b">Qwen: Qwen3 14B</option><option value="qwen/qwen3-235b-a22b-2507">Qwen: Qwen3 235B A22B Instruct 2507</option><option value="qwen/qwen3-235b-a22b-thinking-2507">Qwen: Qwen3 235B A22B Thinking 2507</option><option value="qwen/qwen3-30b-a3b">Qwen: Qwen3 30B A3B</option><option value="qwen/qwen3-30b-a3b-instruct-2507">Qwen: Qwen3 30B A3B Instruct 2507</option><option value="qwen/qwen3-32b">Qwen: Qwen3 32B</option><option value="qwen/qwen3-coder-30b-a3b-instruct">Qwen: Qwen3 Coder 30B A3B Instruct</option><option value="qwen/qwen3-coder">Qwen: Qwen3 Coder 480B A35B</option><option value="qwen/qwen3-coder-flash">Qwen: Qwen3 Coder Flash</option><option value="qwen/qwen3-coder-next">Qwen: Qwen3 Coder Next</option><option value="qwen/qwen3-next-80b-a3b-instruct">Qwen: Qwen3 Next 80B A3B Instruct</option><option value="qwen/qwen3-vl-235b-a22b-instruct">Qwen: Qwen3 VL 235B A22B Instruct</option><option value="qwen/qwen3-vl-30b-a3b-instruct">Qwen: Qwen3 VL 30B A3B Instruct</option><option value="qwen/qwen3-vl-30b-a3b-thinking">Qwen: Qwen3 VL 30B A3B Thinking</option><option value="qwen/qwen3-vl-8b-instruct">Qwen: Qwen3 VL 8B Instruct</option><option value="qwen/qwen3.5-397b-a17b">Qwen: Qwen3.5 397B A17B</option><option value="qwen/qwen3.5-plus-02-15">Qwen: Qwen3.5 Plus 2026-02-15</option><option value="qwen/qwen3.5-plus-20260420">Qwen: Qwen3.5 Plus 2026-04-20</option><option value="qwen/qwen3.5-122b-a10b">Qwen: Qwen3.5-122B-A10B</option><option value="qwen/qwen3.5-27b">Qwen: Qwen3.5-27B</option><option value="qwen/qwen3.5-35b-a3b">Qwen: Qwen3.5-35B-A3B</option><option value="qwen/qwen3.5-9b">Qwen: Qwen3.5-9B</option><option value="qwen/qwen3.5-flash-02-23">Qwen: Qwen3.5-Flash</option><option value="qwen/qwen3.6-27b">Qwen: Qwen3.6 27B</option><option value="qwen/qwen3.6-35b-a3b">Qwen: Qwen3.6 35B A3B</option><option value="qwen/qwen3.6-flash">Qwen: Qwen3.6 Flash</option><option value="qwen/qwen3.6-plus">Qwen: Qwen3.6 Plus</option><option value="qwen/qwen3.7-flash">Qwen: Qwen3.7 Flash</option><option value="qwen/qwen3.7-max">Qwen: Qwen3.7 Max</option><option value="qwen/qwen3.7-plus">Qwen: Qwen3.7 Plus</option><option value="qwen/qwen3.7-plus:batch">Qwen: Qwen3.7 Plus (batch)</option><option value="qwen/qwen3.8-2.4t-a95b">Qwen: Qwen3.8 2.4T A95B</option><option value="qwen/qwen3.8-27b">Qwen: Qwen3.8 27B</option><option value="qwen/qwen3.8-flash">Qwen: Qwen3.8 Flash</option><option value="qwen/qwen3.8-max-0902">Qwen: Qwen3.8 Max (0902)</option><option value="qwen/qwen3.8-max-prime">Qwen: Qwen3.8 Max Prime</option><option value="qwen/qwen3.8-omni-flash">Qwen: Qwen3.8 Omni Flash</option><option value="recursive/flint-v1.0:free">Recursive: Flint (free)</option><option value="reflection/beam-1.0-501b-a23b">Reflection: Beam 1.0 501B A23B</option><option value="rekaai/reka-edge">Reka Edge</option><option value="rekaai/reka-flash-3">Reka Flash 3</option><option value="relace/relace-apply-3">Relace: Relace Apply 3</option><option value="relace/relace-search">Relace: Relace Search</option><option value="undi95/remm-slerp-l2-13b">ReMM SLERP 13B</option><option value="sakana/fugu-max">Sakana: Fugu Max</option><option value="sakana/fugu-ultra">Sakana: Fugu Ultra</option><option value="sakana/fugu-ultra-v2">Sakana: Fugu Ultra v2</option><option value="sakana/sakana-namazu">Sakana: Sakana Namazu</option><option value="sao10k/l3-lunaris-8b">Sao10K: Llama 3 8B Lunaris</option><option value="sao10k/l3.1-euryale-70b">Sao10K: Llama 3.1 Euryale 70B v2.2</option><option value="scaledown/extract">ScaleDown: Extract</option><option value="scaledown/summarize">ScaleDown: Summarize</option><option value="x-ai/grok-4.20">SpaceXAI: Grok 4.20</option><option value="x-ai/grok-4.20-multi-agent">SpaceXAI: Grok 4.20 Multi-Agent</option><option value="x-ai/grok-4.3">SpaceXAI: Grok 4.3</option><option value="x-ai/grok-4.3:batch">SpaceXAI: Grok 4.3 (batch)</option><option value="x-ai/grok-4.5">SpaceXAI: Grok 4.5</option><option value="x-ai/grok-4.6">SpaceXAI: Grok 4.6</option><option value="x-ai/grok-4.7">SpaceXAI: Grok 4.7</option><option value="x-ai/grok-build-0.1">SpaceXAI: Grok Build 0.1</option><option value="stepfun/step-3.5-flash">StepFun: Step 3.5 Flash</option><option value="stepfun/step-3.7-flash">StepFun: Step 3.7 Flash</option><option value="stepfun/step-5-preview">StepFun: Step 5 Preview</option><option value="tencent/hunyuan-a13b-instruct">Tencent: Hunyuan A13B Instruct</option><option value="tencent/hy-mt2-1.8b">Tencent: Hy-MT2-1.8B</option><option value="tencent/hy-mt2-30b-a3b">Tencent: Hy-MT2-30B-A3B</option><option value="tencent/hy-mt2-7b">Tencent: Hy-MT2-7B</option><option value="tencent/hy3">Tencent: Hy3</option><option value="tencent/hy3-preview">Tencent: Hy3 preview</option><option value="tencent/hy4-preview">Tencent: Hy4 preview</option><option value="thedrummer/cydonia-24b-v4.1">TheDrummer: Cydonia 24B V4.1</option><option value="thedrummer/skyfall-36b-v2">TheDrummer: Skyfall 36B V2</option><option value="thedrummer/unslopnemo-12b">TheDrummer: UnslopNemo 12B</option><option value="thinkingmachines/inkling">Thinking Machines: Inkling</option><option value="thinkingmachines/inkling:free">Thinking Machines: Inkling (free)</option><option value="thinkingmachines/inkling-small">Thinking Machines: Inkling Small</option><option value="thinkingmachines/inkling-small:free">Thinking Machines: Inkling Small (free)</option><option value="typesafe/jev-router">TypeSafe: Jev Router</option><option value="upstage/solar-mini4">Upstage: Solar Mini 4</option><option value="upstage/solar-pro4">Upstage: Solar Pro 4</option><option value="cognitivecomputations/dolphin-mistral-24b-venice-edition">Venice: Uncensored</option><option value="writer/palmyra-x5">Writer: Palmyra X5</option><option value="~x-ai/grok-latest">xAI: Grok Latest</option><option value="xiaomi/mimo-v2.5">Xiaomi: MiMo-V2.5</option><option value="xiaomi/mimo-v2.5-pro">Xiaomi: MiMo-V2.5-Pro</option><option value="xiaomi/mimo-v2.6-flash">Xiaomi: MiMo-V2.6-Flash</option><option value="xiaomi/mimo-v2.6-pro">Xiaomi: MiMo-V2.6-Pro</option><option value="xiaomi/mimo-v2.6-pro-ultraspeed">Xiaomi: MiMo-V2.6-Pro-UltraSpeed</option><option value="xingchen-agi/xing4.0-29b-a4b:free">XingChen: Xing4.0 29B A4B (free)</option><option value="z-ai/glm-4.5">Z.ai: GLM 4.5</option><option value="z-ai/glm-4.5-air">Z.ai: GLM 4.5 Air</option><option value="z-ai/glm-4.5v">Z.ai: GLM 4.5V</option><option value="z-ai/glm-4.6">Z.ai: GLM 4.6</option><option value="z-ai/glm-4.6v">Z.ai: GLM 4.6V</option><option value="z-ai/glm-4.7">Z.ai: GLM 4.7</option><option value="z-ai/glm-4.7-flash">Z.ai: GLM 4.7 Flash</option><option value="z-ai/glm-5">Z.ai: GLM 5</option><option value="z-ai/glm-5-turbo">Z.ai: GLM 5 Turbo</option><option value="z-ai/glm-5.1">Z.ai: GLM 5.1</option><option value="z-ai/glm-5.2">Z.ai: GLM 5.2</option><option value="z-ai/glm-5.3">Z.ai: GLM 5.3</option><option value="z-ai/glm-5.3:batch">Z.ai: GLM 5.3 (batch)</option><option value="z-ai/glm-5.3-flash">Z.ai: GLM 5.3 Flash</option><option value="z-ai/glm-5.3-flash:batch">Z.ai: GLM 5.3 Flash (batch)</option><option value="z-ai/glm-5.3-flashx">Z.ai: GLM 5.3 FlashX</option><option value="z-ai/glm-5.3-flashx-legal">Z.ai: GLM 5.3 FlashX Legal</option><option value="z-ai/glm-5.3-prime">Z.ai: GLM 5.3 Prime</option><option value="z-ai/glm-5v-turbo">Z.ai: GLM 5V Turbo</option><option value="~z-ai/glm-flash-latest">Z.ai: GLM Flash Latest</option><option value="~z-ai/glm-latest">Z.ai: GLM Latest</option>
+      </datalist>
+
+      <div class="row mt-2" style="gap:8px; flex-wrap:wrap">
+        <span class="tiny muted">Suggested:</span>
+        <button type="button" class="btn sm js-fill"
+                data-extraction="#" data-assistant="anthropic/claude-haiku-4.5">
+          Use suggested models
+        </button>
+        <span class="tiny muted">451 models in the catalogue</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="row" style="gap:8px; flex-wrap:wrap">
+        <button class="btn primary" name="action" value="save" type="submit">Save &amp; connect</button>
+        <button class="btn" name="action" value="test" type="submit">Test only</button>
+        
+      </div>
+      <p class="hint mt-2">
+        A rejected key is never saved, so a typo cannot silently become the configured key.
+        If this server cannot reach the provider at all, you can still store the key:
+      </p>
+      <button class="btn sm mt-1" type="submit" name="action" value="save" formnovalidate
+              onclick="document.getElementById('force-field').value='1'">Save without verifying</button>
+      <input type="hidden" name="force" id="force-field" value="">
+    </form>
+
+    <div class="card-foot">
+      <dl class="kv">
+        <dt>Status</dt>
+        <dd>No key configured</dd>
+        <dt>Source</dt>
+        <dd>none</dd>
+        <dt>Stored key</dt>
+        <dd class="mono">—</dd>
+        <dt>Verified</dt>
+        <dd>not verified</dd>
+        <dt>Encryption</dt>
+        <dd>fernet at rest</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- ================= Right column ================= -->
+  <div class="stack">
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">How your key is handled</div></div>
+      <div class="card-body">
+        <ul class="list">
+          <li>
+            <div>
+              <strong>Validated before it is saved.</strong>
+              <div class="tiny muted">We ask the provider who the key belongs to. A rejected key is never stored.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Encrypted at rest.</strong>
+              <div class="tiny muted">Fernet encryption with a key held outside the database. A dump or backup does not expose it.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Never returned.</strong>
+              <div class="tiny muted">The API only ever emits the masked form. Nothing logs the key.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Effective immediately.</strong>
+              <div class="tiny muted">The next extraction or question uses it. No restart.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">What the key changes</div>
+      </div>
+      <div class="card-body">
+        <table class="tbl">
+          <thead><tr><th>Capability</th><th>Without a key</th><th>With a key</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="strong">Tender search &amp; price data</td>
+              <td><span class="badge green">works</span></td>
+              <td><span class="badge green">works</span></td>
+            </tr>
+            <tr>
+              <td class="strong">Field extraction from PDFs</td>
+              <td>rules only — money, dates, HSN, EMD</td>
+              <td>rules + model, every value cited</td>
+            </tr>
+            <tr>
+              <td class="strong">Assistant answers</td>
+              <td>templated from records</td>
+              <td>same facts, phrased — figures re-verified</td>
+            </tr>
+            <tr>
+              <td class="strong">Fabrication risk</td>
+              <td><span class="badge green">none possible</span></td>
+              <td><span class="badge green">blocked by verifier</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">Collection policy</div></div>
+      <div class="card-body">
+        <p class="tiny muted mb-0">
+          What the platform is allowed to collect is set by the source registry, not by this page.
+          Each source carries its robots status, terms summary, rate limit and review date, and a
+          connector will not run without a current record.
+        </p>
+      </div>
+      <div class="card-foot"><a class="btn sm" href="sources.html">Review sources →</a></div>
+    </div>
+
+  </div>
+</div>
+
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong style="color:var(--ink-2)">Every figure carries its source.</strong>
+       Prices are shown with their basis — awarded, L1/L2/L3 quote, estimated or market —
+       and bases are never blended in a statistic.</p>
+    <p>Individual officer names are not searchable or exportable. Tender documents remain the
+       property of the issuing department; this platform shows extracted facts and links to the origin.</p>
+  </div>
+</footer>
+
+
+<script>
+  const keyInput = document.getElementById('api_key');
+  const reveal = document.getElementById('reveal');
+  reveal?.addEventListener('click', () => {
+    const shown = keyInput.type === 'text';
+    keyInput.type = shown ? 'password' : 'text';
+    reveal.textContent = shown ? 'Show' : 'Hide';
+  });
+
+  document.querySelectorAll('.js-fill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('model_extraction').value = btn.dataset.extraction;
+      document.getElementById('model_assistant').value = btn.dataset.assistant;
+    });
+  });
+
+  // Trim stray whitespace from a pasted key — the most common cause of a 401.
+  keyInput?.addEventListener('blur', () => { keyInput.value = keyInput.value.trim(); });
+</script>
+
+
+<script>
+document.addEventListener('submit', function (e) {
+  e.preventDefault();
+  alert('This is a static preview. Run the app from the repository to use this feature.');
+}, true);
+document.addEventListener('click', function (e) {
+  const a = e.target.closest('a');
+  if (a && a.getAttribute('href') === '#') e.preventDefault();
+}, true);
+</script>
+</body>
+</html>

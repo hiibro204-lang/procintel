@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sources — Procurement Intelligence</title>
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="static/app.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C8102E'/><text x='16' y='23' font-family='Helvetica' font-size='18' font-weight='bold' fill='white' text-anchor='middle'>P</text></svg>">
+</head>
+<body>
+
+
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">P</span>
+      <span class="brand-name">Procurement Intelligence</span>
+      <span class="brand-tag">beta</span>
+    </a>
+
+    <nav class="nav">
+      
+        <a href="index.html" class="">Overview</a>
+      
+        <a href="search.html" class="">Tenders</a>
+      
+        <a href="#" class="">Prices</a>
+      
+        <a href="assistant.html" class="">Assistant</a>
+      
+        <a href="sources.html" class="active">Sources</a>
+      
+        <a href="settings.html" class="">Settings</a>
+      
+    </nav>
+
+    <div class="topbar-right">
+      
+        <a class="chip off" href="settings.html" title="Paste an API key to turn on model extraction and phrasing">
+          <span class="dot"></span> AI off
+        </a>
+      
+      <a class="btn sm" href="https://github.com/hiibro204-lang/procintel#api">API</a>
+    </div>
+  </div>
+</header>
+<div class="wrap" style="padding-top:14px">
+  <div class="alert info">
+    <span class="icon">i</span>
+    <div>
+      <strong>Static preview.</strong> Every screen below is real output from the app, rendered
+      against a seeded demo corpus. The interactive version — live API, assistant answers, saving
+      your API key — runs from the repository:
+      <a href="https://codespaces.new/hiibro204-lang/procintel">open it in GitHub Codespaces</a> or
+      <a href="https://github.com/hiibro204-lang/procintel">read the source</a>.
+    </div>
+  </div>
+</div>
+
+
+<main>
+  <div class="wrap">
+    
+
+<div class="between">
+  <div>
+    <p class="eyebrow">Data source management</p>
+    <h1 class="mt-1">Sources &amp; collection policy</h1>
+    <p class="muted mt-1" style="max-width:700px">
+      A connector cannot run unless its policy record is current. The reasons a source is blocked are
+      shown here, because they are the platform's legal position expressed as data.
+    </p>
+  </div>
+</div>
+
+<div class="card mt-4">
+  <div class="table-wrap">
+    <table class="tbl">
+      <thead>
+        <tr><th>Source</th><th>Tier</th><th>robots</th><th class="num">Rate</th>
+            <th>Reviewed</th><th>Gate</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>
+            <div class="strong">data.gov.in (OGD Platform)</div>
+            <div class="tiny-sm muted mono">data_gov_in · open_data</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Thin on tender-level records; useful for macro context and state datasets.</div>
+            
+          </td>
+          <td><span class="badge">A</span></td>
+          <td class="tiny muted">allowed</td>
+          <td class="num tiny muted">30/min</td>
+          <td class="tiny muted">15 Oct 2026</td>
+          <td>
+            
+              <span class="badge red">blocked</span>
+              <ul class="tiny-sm muted" style="margin:5px 0 0; padding-left:15px">
+                <li>source is disabled in the registry</li><li>source requires authentication; we do not use credentials</li>
+              </ul>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">Demo corpus (synthetic)</div>
+            <div class="tiny-sm muted mono">demo_seed · demo</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Local development and demonstration data only. Never merge with collected records.</div>
+            
+          </td>
+          <td><span class="badge">A</span></td>
+          <td class="tiny muted">allowed</td>
+          <td class="num tiny muted">0/min</td>
+          <td class="tiny muted">02 Nov 2026</td>
+          <td>
+            
+              <span class="badge red">blocked</span>
+              <ul class="tiny-sm muted" style="margin:5px 0 0; padding-left:15px">
+                <li>no connector configured</li>
+              </ul>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">GeM — Bid Documents (PDF)</div>
+            <div class="tiny-sm muted mono">gem_documents · central_marketplace</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Archived for extraction only. Documents are not re-served to customers; customers get extracted facts plus a link to the source.</div>
+            
+          </td>
+          <td><span class="badge">A</span></td>
+          <td class="tiny muted">allowed</td>
+          <td class="num tiny muted">8/min</td>
+          <td class="tiny muted">01 Nov 2026</td>
+          <td>
+            
+              <span class="badge green">runnable</span>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">GeM — Bid Listings</div>
+            <div class="tiny-sm muted mono">gem_listing · central_marketplace</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Tier A primary source. Listing metadata only; documents archived for extraction.</div>
+            
+          </td>
+          <td><span class="badge">A</span></td>
+          <td class="tiny muted">allowed</td>
+          <td class="num tiny muted">12/min</td>
+          <td class="tiny muted">01 Nov 2026</td>
+          <td>
+            
+              <span class="badge green">runnable</span>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">GeM — Bid Results (price ladder)</div>
+            <div class="tiny-sm muted mono">gem_results · central_marketplace</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Highest-value source in India for price intelligence. Individual officer names are stored as individual_identifying and are...</div>
+            
+          </td>
+          <td><span class="badge">A</span></td>
+          <td class="tiny muted">allowed</td>
+          <td class="num tiny muted">10/min</td>
+          <td class="tiny muted">01 Nov 2026</td>
+          <td>
+            
+              <span class="badge green">runnable</span>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">CPPP — Award of Contract</div>
+            <div class="tiny-sm muted mono">cppp_aoc · central</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Captcha-gated. Do not solve captchas. Route via licensed feed or analyst queue.</div>
+            
+          </td>
+          <td><span class="badge">B</span></td>
+          <td class="tiny muted">blocked</td>
+          <td class="num tiny muted">4/min</td>
+          <td class="tiny muted">01 Nov 2026</td>
+          <td>
+            
+              <span class="badge red">blocked</span>
+              <ul class="tiny-sm muted" style="margin:5px 0 0; padding-left:15px">
+                <li>source is disabled in the registry</li><li>robots_status is &#39;blocked&#39;, not runnable</li>
+              </ul>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">CPPP / eprocure.gov.in — Tender Listings</div>
+            <div class="tiny-sm muted mono">cppp_listing · central</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Best-effort only. Suspended pending a stable, captcha-free access path or a licensed feed. Must never be re-enabled without a...</div>
+            
+          </td>
+          <td><span class="badge">B</span></td>
+          <td class="tiny muted">blocked</td>
+          <td class="num tiny muted">4/min</td>
+          <td class="tiny muted">01 Nov 2026</td>
+          <td>
+            
+              <span class="badge red">blocked</span>
+              <ul class="tiny-sm muted" style="margin:5px 0 0; padding-left:15px">
+                <li>source is disabled in the registry</li><li>robots_status is &#39;blocked&#39;, not runnable</li>
+              </ul>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">eTenders.gov.in (GePNIC)</div>
+            <div class="tiny-sm muted mono">etenders_gov · central_multi_org</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Phase 5 source. Connector template in app/connectors/gepnic.py is a stub.</div>
+            
+          </td>
+          <td><span class="badge">B</span></td>
+          <td class="tiny muted">partial</td>
+          <td class="num tiny muted">6/min</td>
+          <td class="tiny muted">20 Oct 2026</td>
+          <td>
+            
+              <span class="badge red">blocked</span>
+              <ul class="tiny-sm muted" style="margin:5px 0 0; padding-left:15px">
+                <li>source is disabled in the registry</li>
+              </ul>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">IREPS — Indian Railways</div>
+            <div class="tiny-sm muted mono">ireps · railways</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Phase 5. Document-heavy extraction; high commercial value.</div>
+            
+          </td>
+          <td><span class="badge">B</span></td>
+          <td class="tiny muted">partial</td>
+          <td class="num tiny muted">6/min</td>
+          <td class="tiny muted">20 Oct 2026</td>
+          <td>
+            
+              <span class="badge red">blocked</span>
+              <ul class="tiny-sm muted" style="margin:5px 0 0; padding-left:15px">
+                <li>source is disabled in the registry</li>
+              </ul>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">Maharashtra e-Tenders</div>
+            <div class="tiny-sm muted mono">maharashtra · state</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">EXCLUDED. Do not crawl. Revisit only if a licence is obtained or robots.txt changes. The registry is the gate: keep this row...</div>
+            
+          </td>
+          <td><span class="badge">B</span></td>
+          <td class="tiny muted">disallowed</td>
+          <td class="num tiny muted">0/min</td>
+          <td class="tiny muted">20 Oct 2026</td>
+          <td>
+            
+              <span class="badge red">blocked</span>
+              <ul class="tiny-sm muted" style="margin:5px 0 0; padding-left:15px">
+                <li>source is disabled in the registry</li><li>robots.txt disallows collection</li><li>no connector configured</li>
+              </ul>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">Telangana e-Procurement</div>
+            <div class="tiny-sm muted mono">telangana_tenders · state</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Phase 5 priority state.</div>
+            
+          </td>
+          <td><span class="badge">B</span></td>
+          <td class="tiny muted">partial</td>
+          <td class="num tiny muted">6/min</td>
+          <td class="tiny muted">20 Oct 2026</td>
+          <td>
+            
+              <span class="badge red">blocked</span>
+              <ul class="tiny-sm muted" style="margin:5px 0 0; padding-left:15px">
+                <li>source is disabled in the registry</li>
+              </ul>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">Tamil Nadu e-Tenders</div>
+            <div class="tiny-sm muted mono">tn_tenders · state</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Phase 5 priority state.</div>
+            
+          </td>
+          <td><span class="badge">B</span></td>
+          <td class="tiny muted">partial</td>
+          <td class="num tiny muted">6/min</td>
+          <td class="tiny muted">20 Oct 2026</td>
+          <td>
+            
+              <span class="badge red">blocked</span>
+              <ul class="tiny-sm muted" style="margin:5px 0 0; padding-left:15px">
+                <li>source is disabled in the registry</li>
+              </ul>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">BidAssist Partner API (licensed)</div>
+            <div class="tiny-sm muted mono">bidassist_api · licensed</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Records ingested from this source carry redistribution_allowed=false and are filtered out of every customer-facing surface by...</div>
+            
+          </td>
+          <td><span class="badge">C</span></td>
+          <td class="tiny muted">allowed</td>
+          <td class="num tiny muted">300/min</td>
+          <td class="tiny muted">25 Oct 2026</td>
+          <td>
+            
+              <span class="badge red">blocked</span>
+              <ul class="tiny-sm muted" style="margin:5px 0 0; padding-left:15px">
+                <li>source is disabled in the registry</li><li>source requires authentication; we do not use credentials</li>
+              </ul>
+            
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+            <div class="strong">TenderTiger (licensed, analyst seats)</div>
+            <div class="tiny-sm muted mono">tendertiger · licensed</div>
+            
+            <div class="tiny-sm muted" style="margin-top:3px">Manual analyst use only. Do not ingest programmatically.</div>
+            
+          </td>
+          <td><span class="badge">C</span></td>
+          <td class="tiny muted">unknown</td>
+          <td class="num tiny muted">0/min</td>
+          <td class="tiny muted">25 Oct 2026</td>
+          <td>
+            
+              <span class="badge red">blocked</span>
+              <ul class="tiny-sm muted" style="margin:5px 0 0; padding-left:15px">
+                <li>source is disabled in the registry</li><li>robots_status is &#39;unknown&#39;, not runnable</li><li>source requires authentication; we do not use credentials</li><li>no connector configured</li>
+              </ul>
+            
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card mt-3">
+  <div class="card-head"><div class="card-title">Rules the gate enforces</div></div>
+  <div class="card-body">
+    <ul class="list">
+      <li><span class="tiny">robots.txt disallow means no collection — permanently, until the registry changes.</span></li>
+      <li><span class="tiny">Sources requiring authentication are never crawled with credentials.</span></li>
+      <li><span class="tiny">A policy review older than 365 days blocks the source automatically.</span></li>
+      <li><span class="tiny">Licensed feeds carry <code>redistribution_allowed=false</code> until a written right exists.</span></li>
+      <li><span class="tiny">Captchas are never solved; a captcha-gated source stays blocked.</span></li>
+    </ul>
+  </div>
+</div>
+
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong style="color:var(--ink-2)">Every figure carries its source.</strong>
+       Prices are shown with their basis — awarded, L1/L2/L3 quote, estimated or market —
+       and bases are never blended in a statistic.</p>
+    <p>Individual officer names are not searchable or exportable. Tender documents remain the
+       property of the issuing department; this platform shows extracted facts and links to the origin.</p>
+  </div>
+</footer>
+
+
+
+<script>
+document.addEventListener('submit', function (e) {
+  e.preventDefault();
+  alert('This is a static preview. Run the app from the repository to use this feature.');
+}, true);
+document.addEventListener('click', function (e) {
+  const a = e.target.closest('a');
+  if (a && a.getAttribute('href') === '#') e.preventDefault();
+}, true);
+</script>
+</body>
+</html>
