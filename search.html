@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tenders — Procurement Intelligence</title>
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="static/app.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C8102E'/><text x='16' y='23' font-family='Helvetica' font-size='18' font-weight='bold' fill='white' text-anchor='middle'>P</text></svg>">
+</head>
+<body>
+
+
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">P</span>
+      <span class="brand-name">Procurement Intelligence</span>
+      <span class="brand-tag">beta</span>
+    </a>
+
+    <nav class="nav">
+      
+        <a href="index.html" class="">Overview</a>
+      
+        <a href="search.html" class="active">Tenders</a>
+      
+        <a href="#" class="">Prices</a>
+      
+        <a href="assistant.html" class="">Assistant</a>
+      
+        <a href="sources.html" class="">Sources</a>
+      
+        <a href="settings.html" class="">Settings</a>
+      
+    </nav>
+
+    <div class="topbar-right">
+      
+        <a class="chip off" href="settings.html" title="Paste an API key to turn on model extraction and phrasing">
+          <span class="dot"></span> AI off
+        </a>
+      
+      <a class="btn sm" href="https://github.com/hiibro204-lang/procintel#api">API</a>
+    </div>
+  </div>
+</header>
+<div class="wrap" style="padding-top:14px">
+  <div class="alert info">
+    <span class="icon">i</span>
+    <div>
+      <strong>Static preview.</strong> Every screen below is real output from the app, rendered
+      against a seeded demo corpus. The interactive version — live API, assistant answers, saving
+      your API key — runs from the repository:
+      <a href="https://codespaces.new/hiibro204-lang/procintel">open it in GitHub Codespaces</a> or
+      <a href="https://github.com/hiibro204-lang/procintel">read the source</a>.
+    </div>
+  </div>
+</div>
+
+
+<main>
+  <div class="wrap">
+    
+
+<div class="between">
+  <div>
+    <p class="eyebrow">Tender discovery</p>
+    <h1 class="mt-1">Tender search</h1>
+    <p class="muted mt-1">7 record(s) match your filters.</p>
+  </div>
+</div>
+
+<form method="get" class="card mt-3">
+  <div class="card-body" style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end">
+    <label class="field grow" style="min-width:260px">
+      <span class="label">Keywords</span>
+      <input class="input" name="q" value="chair" placeholder="office chair, HVAC, LED luminaire">
+    </label>
+    <label class="field" style="min-width:180px">
+      <span class="label">State</span>
+      <select class="select" name="state">
+        <option value="">All states</option>
+        <option value="Gujarat" >Gujarat</option><option value="Karnataka" >Karnataka</option><option value="Madhya Pradesh" >Madhya Pradesh</option><option value="Maharashtra" >Maharashtra</option><option value="Rajasthan" >Rajasthan</option><option value="Tamil Nadu" >Tamil Nadu</option><option value="Telangana" >Telangana</option><option value="Uttar Pradesh" >Uttar Pradesh</option>
+      </select>
+    </label>
+    <label class="field" style="min-width:150px">
+      <span class="label">Status</span>
+      <select class="select" name="status">
+        
+        <option value="" selected>Any</option>
+        
+        <option value="live" >live</option>
+        
+        <option value="awarded" >awarded</option>
+        
+        <option value="closed" >closed</option>
+        
+      </select>
+    </label>
+    <button class="btn primary">Apply filters</button>
+    <a class="btn ghost" href="search.html">Clear</a>
+  </div>
+</form>
+
+<div class="card mt-3">
+  <div class="table-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Tender</th><th>Buyer</th><th>State</th>
+          <th class="num">Est. value</th><th>Status</th><th class="num">Closing</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>
+            <a class="strong" href="#">Ergonomic Office Chair High Back Mesh with Lumbar Support</a>
+            <div class="tiny-sm muted mono">GEM/2026/B/8069492</div>
+          </td>
+          <td class="muted">Directorate of Health Services</td>
+          <td class="muted">Madhya Pradesh</td>
+          <td class="num">
+            <span class="muted-2" style="color:var(--muted-2)">not published</span>
+          </td>
+          <td>
+            <span class="badge red">awarded</span>
+            
+          </td>
+          <td class="num muted">03 Oct 2026</td>
+        </tr>
+        
+        <tr>
+          <td>
+            <a class="strong" href="tender-7.html">Ergonomic Office Chair High Back Mesh with Lumbar Support — Qty 61</a>
+            <div class="tiny-sm muted mono">DEMO/2026/B/100006</div>
+          </td>
+          <td class="muted">State Transport Corporation</td>
+          <td class="muted">Tamil Nadu</td>
+          <td class="num">
+            
+              ₹11,10,151.79 <span class="badge amber">est.</span>
+            
+          </td>
+          <td>
+            <span class="badge red">awarded</span>
+            
+          </td>
+          <td class="num muted">02 Aug 2026</td>
+        </tr>
+        
+        <tr>
+          <td>
+            <a class="strong" href="tender-37.html">Ergonomic Office Chair High Back Mesh with Lumbar Support — Qty 99</a>
+            <div class="tiny-sm muted mono">DEMO/2026/B/100036</div>
+          </td>
+          <td class="muted">Municipal Corporation</td>
+          <td class="muted">Maharashtra</td>
+          <td class="num">
+            
+              ₹18,11,940.20 <span class="badge amber">est.</span>
+            
+          </td>
+          <td>
+            <span class="badge red">awarded</span>
+            
+          </td>
+          <td class="num muted">22 Aug 2025</td>
+        </tr>
+        
+        <tr>
+          <td>
+            <a class="strong" href="tender-34.html">Ergonomic Office Chair High Back Mesh with Lumbar Support — Qty 55</a>
+            <div class="tiny-sm muted mono">DEMO/2026/B/100033</div>
+          </td>
+          <td class="muted">Public Works Department</td>
+          <td class="muted">Karnataka</td>
+          <td class="num">
+            
+              ₹9,25,706.99 <span class="badge amber">est.</span>
+            
+          </td>
+          <td>
+            <span class="badge red">awarded</span>
+            
+          </td>
+          <td class="num muted">30 Jul 2025</td>
+        </tr>
+        
+        <tr>
+          <td>
+            <a class="strong" href="tender-31.html">Ergonomic Office Chair High Back Mesh with Lumbar Support — Qty 27</a>
+            <div class="tiny-sm muted mono">DEMO/2026/B/100030</div>
+          </td>
+          <td class="muted">State Transport Corporation</td>
+          <td class="muted">Tamil Nadu</td>
+          <td class="num">
+            
+              ₹4,84,712.09 <span class="badge amber">est.</span>
+            
+          </td>
+          <td>
+            <span class="badge red">awarded</span>
+            
+          </td>
+          <td class="num muted">04 Jul 2025</td>
+        </tr>
+        
+        <tr>
+          <td>
+            <a class="strong" href="tender-23.html">Ergonomic Office Chair High Back Mesh with Lumbar Support — Qty 29</a>
+            <div class="tiny-sm muted mono">DEMO/2026/B/100022</div>
+          </td>
+          <td class="muted">Department of School Education</td>
+          <td class="muted">Gujarat</td>
+          <td class="num">
+            
+              ₹4,75,435.99 <span class="badge amber">est.</span>
+            
+          </td>
+          <td>
+            <span class="badge red">awarded</span>
+            
+          </td>
+          <td class="num muted">28 May 2025</td>
+        </tr>
+        
+        <tr>
+          <td>
+            <a class="strong" href="tender-4.html">Ergonomic Office Chair High Back Mesh with Lumbar Support — Qty 30</a>
+            <div class="tiny-sm muted mono">DEMO/2026/B/100003</div>
+          </td>
+          <td class="muted">District Rural Development Agency</td>
+          <td class="muted">Uttar Pradesh</td>
+          <td class="num">
+            
+              ₹4,72,301.03 <span class="badge amber">est.</span>
+            
+          </td>
+          <td>
+            <span class="badge red">awarded</span>
+            
+          </td>
+          <td class="num muted">20 Dec 2024</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+  
+</div>
+
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong style="color:var(--ink-2)">Every figure carries its source.</strong>
+       Prices are shown with their basis — awarded, L1/L2/L3 quote, estimated or market —
+       and bases are never blended in a statistic.</p>
+    <p>Individual officer names are not searchable or exportable. Tender documents remain the
+       property of the issuing department; this platform shows extracted facts and links to the origin.</p>
+  </div>
+</footer>
+
+
+
+<script>
+document.addEventListener('submit', function (e) {
+  e.preventDefault();
+  alert('This is a static preview. Run the app from the repository to use this feature.');
+}, true);
+document.addEventListener('click', function (e) {
+  const a = e.target.closest('a');
+  if (a && a.getAttribute('href') === '#') e.preventDefault();
+}, true);
+</script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overview — Procurement Intelligence</title>
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="static/app.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C8102E'/><text x='16' y='23' font-family='Helvetica' font-size='18' font-weight='bold' fill='white' text-anchor='middle'>P</text></svg>">
+</head>
+<body>
+
+
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">P</span>
+      <span class="brand-name">Procurement Intelligence</span>
+      <span class="brand-tag">beta</span>
+    </a>
+
+    <nav class="nav">
+      
+        <a href="index.html" class="active">Overview</a>
+      
+        <a href="search.html" class="">Tenders</a>
+      
+        <a href="#" class="">Prices</a>
+      
+        <a href="assistant.html" class="">Assistant</a>
+      
+        <a href="sources.html" class="">Sources</a>
+      
+        <a href="settings.html" class="">Settings</a>
+      
+    </nav>
+
+    <div class="topbar-right">
+      
+        <a class="chip off" href="settings.html" title="Paste an API key to turn on model extraction and phrasing">
+          <span class="dot"></span> AI off
+        </a>
+      
+      <a class="btn sm" href="https://github.com/hiibro204-lang/procintel#api">API</a>
+    </div>
+  </div>
+</header>
+<div class="wrap" style="padding-top:14px">
+  <div class="alert info">
+    <span class="icon">i</span>
+    <div>
+      <strong>Static preview.</strong> Every screen below is real output from the app, rendered
+      against a seeded demo corpus. The interactive version — live API, assistant answers, saving
+      your API key — runs from the repository:
+      <a href="https://codespaces.new/hiibro204-lang/procintel">open it in GitHub Codespaces</a> or
+      <a href="https://github.com/hiibro204-lang/procintel">read the source</a>.
+    </div>
+  </div>
+</div>
+
+
+<main>
+  <div class="wrap">
+    
+
+<div class="between">
+  <div>
+    <p class="eyebrow">Executive overview</p>
+    <h1 class="mt-1">What the corpus holds</h1>
+    <p class="muted mt-1">Coverage, and how much of it carries a published price ladder.</p>
+  </div>
+  <form action="#" class="row" style="gap:8px">
+    <input class="input" name="q" placeholder="Search tenders — office chair, HVAC, LED…" style="width:290px">
+    <button class="btn primary">Search</button>
+  </form>
+</div>
+
+
+<div class="card accent mt-4">
+  <div class="card-body between">
+    <div style="max-width:640px">
+      <div class="row" style="gap:8px">
+        <span class="badge red">action needed</span>
+        <strong>Connect a model to finish the setup</strong>
+      </div>
+      <p class="muted mt-1 mb-0 tiny">
+        Search, price intelligence and the assistant already work on your data. Paste an API key and
+        PDF extraction gains model reading, and answers get phrased instead of templated —
+        every figure still re-verified against the record.
+      </p>
+    </div>
+    <a class="btn primary" href="settings.html">Paste API key →</a>
+  </div>
+</div>
+
+
+<div class="kpis mt-4">
+  <div class="kpi">
+    <div class="kpi-label">Tender records</div>
+    <div class="kpi-value">41</div>
+    <div class="kpi-note">across all connected sources</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">With price ladder</div>
+    <div class="kpi-value red">41</div>
+    <div class="kpi-note">100.0% of records</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Awards</div>
+    <div class="kpi-value">41</div>
+    <div class="kpi-note">contracts with a recorded value</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Price observations</div>
+    <div class="kpi-value">155</div>
+    <div class="kpi-note">awarded and L1–L3 quotes</div>
+  </div>
+</div>
+
+<div class="grid g4 mt-2">
+  
+  <div class="kpi flat">
+    <div class="kpi-label">Products</div>
+    <div class="kpi-value">8</div>
+  </div>
+  
+  <div class="kpi flat">
+    <div class="kpi-label">Suppliers</div>
+    <div class="kpi-value">9</div>
+  </div>
+  
+  <div class="kpi flat">
+    <div class="kpi-label">Buying organisations</div>
+    <div class="kpi-value">8</div>
+  </div>
+  
+  <div class="kpi flat">
+    <div class="kpi-label">Runnable sources</div>
+    <div class="kpi-value">3 / 14</div>
+  </div>
+  
+</div>
+
+<div class="grid mt-4" style="grid-template-columns: minmax(0,2fr) minmax(0,1fr); gap:18px">
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <div class="card-title">Most recent records</div>
+        <div class="card-sub">Newest first, from every enabled source</div>
+      </div>
+      <a class="btn sm" href="search.html">View all</a>
+    </div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th>Tender</th><th>Buyer</th><th>State</th><th class="num">Closing</th></tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>
+              <a class="strong" href="#">Ergonomic Office Chair High Back Mesh with Lumbar Support</a>
+              <div class="tiny-sm muted mono">GEM/2026/B/8069492</div>
+            </td>
+            <td class="muted">Directorate of Health Services</td>
+            <td class="muted">Madhya Pradesh</td>
+            <td class="num muted">03 Oct 2026</td>
+          </tr>
+          
+          <tr>
+            <td>
+              <a class="strong" href="tender-40.html">Laptop Core i7 14 inch with 16GB RAM — Qty 21</a>
+              <div class="tiny-sm muted mono">DEMO/2026/B/100039</div>
+            </td>
+            <td class="muted">Department of School Education</td>
+            <td class="muted">Gujarat</td>
+            <td class="num muted">04 Dec 2025</td>
+          </tr>
+          
+          <tr>
+            <td>
+              <a class="strong" href="tender-39.html">Steel Almirah 6 feet with Locker — Qty 38</a>
+              <div class="tiny-sm muted mono">DEMO/2026/B/100038</div>
+            </td>
+            <td class="muted">Department of School Education</td>
+            <td class="muted">Gujarat</td>
+            <td class="num muted">01 Jun 2025</td>
+          </tr>
+          
+          <tr>
+            <td>
+              <a class="strong" href="tender-38.html">Desktop Computer Core i5 with 8GB RAM and 512GB SSD — Qty 61</a>
+              <div class="tiny-sm muted mono">DEMO/2026/B/100037</div>
+            </td>
+            <td class="muted">Public Works Department</td>
+            <td class="muted">Karnataka</td>
+            <td class="num muted">10 Feb 2026</td>
+          </tr>
+          
+          <tr>
+            <td>
+              <a class="strong" href="tender-37.html">Ergonomic Office Chair High Back Mesh with Lumbar Support — Qty 99</a>
+              <div class="tiny-sm muted mono">DEMO/2026/B/100036</div>
+            </td>
+            <td class="muted">Municipal Corporation</td>
+            <td class="muted">Maharashtra</td>
+            <td class="num muted">22 Aug 2025</td>
+          </tr>
+          
+          <tr>
+            <td>
+              <a class="strong" href="tender-36.html">Steel Almirah 6 feet with Locker — Qty 26</a>
+              <div class="tiny-sm muted mono">DEMO/2026/B/100035</div>
+            </td>
+            <td class="muted">Directorate of Medical Education</td>
+            <td class="muted">Rajasthan</td>
+            <td class="num muted">04 Mar 2026</td>
+          </tr>
+          
+          <tr>
+            <td>
+              <a class="strong" href="tender-35.html">Desktop Computer Core i5 with 8GB RAM and 512GB SSD — Qty 93</a>
+              <div class="tiny-sm muted mono">DEMO/2026/B/100034</div>
+            </td>
+            <td class="muted">District Rural Development Agency</td>
+            <td class="muted">Uttar Pradesh</td>
+            <td class="num muted">18 Dec 2025</td>
+          </tr>
+          
+          <tr>
+            <td>
+              <a class="strong" href="tender-34.html">Ergonomic Office Chair High Back Mesh with Lumbar Support — Qty 55</a>
+              <div class="tiny-sm muted mono">DEMO/2026/B/100033</div>
+            </td>
+            <td class="muted">Public Works Department</td>
+            <td class="muted">Karnataka</td>
+            <td class="num muted">30 Jul 2025</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Price basis split</div>
+          <div class="card-sub">Never blended in a statistic</div>
+        </div>
+      </div>
+      <div class="card-body">
+        
+        
+        <div class="mb-0" style="margin-bottom:12px">
+          <div class="row between" style="margin-bottom:5px">
+            <span class="tiny" style="font-weight:600">awarded</span>
+            <span class="tiny muted">41</span>
+          </div>
+          <div class="bar"><span style="width: 100.0%"></span></div>
+        </div>
+        
+        <div class="mb-0" style="margin-bottom:12px">
+          <div class="row between" style="margin-bottom:5px">
+            <span class="tiny" style="font-weight:600">l1_quote</span>
+            <span class="tiny muted">41</span>
+          </div>
+          <div class="bar"><span style="width: 100.0%"></span></div>
+        </div>
+        
+        <div class="mb-0" style="margin-bottom:12px">
+          <div class="row between" style="margin-bottom:5px">
+            <span class="tiny" style="font-weight:600">l2_quote</span>
+            <span class="tiny muted">41</span>
+          </div>
+          <div class="bar"><span style="width: 100.0%"></span></div>
+        </div>
+        
+        <div class="mb-0" style="margin-bottom:12px">
+          <div class="row between" style="margin-bottom:5px">
+            <span class="tiny" style="font-weight:600">l3_quote</span>
+            <span class="tiny muted">32</span>
+          </div>
+          <div class="bar"><span style="width: 78.0%"></span></div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">Top states</div></div>
+      <div class="card-body tight">
+        <ul class="list" style="padding:0 16px">
+          
+          <li><span class="tiny">Gujarat</span><span class="tiny muted">9</span></li>
+          
+          <li><span class="tiny">Uttar Pradesh</span><span class="tiny muted">8</span></li>
+          
+          <li><span class="tiny">Karnataka</span><span class="tiny muted">7</span></li>
+          
+          <li><span class="tiny">Madhya Pradesh</span><span class="tiny muted">5</span></li>
+          
+          <li><span class="tiny">Telangana</span><span class="tiny muted">5</span></li>
+          
+          <li><span class="tiny">Maharashtra</span><span class="tiny muted">3</span></li>
+          
+          <li><span class="tiny">Rajasthan</span><span class="tiny muted">2</span></li>
+          
+          <li><span class="tiny">Tamil Nadu</span><span class="tiny muted">2</span></li>
+          
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">Source health</div>
+        <a class="tiny" href="sources.html">details →</a>
+      </div>
+      <div class="card-body tight">
+        <ul class="list" style="padding:0 16px">
+          
+          <li>
+            <span class="tiny">BidAssist Partner API (licensed)</span>
+            
+              <span class="badge outline">idle</span>
+            
+          </li>
+          
+          <li>
+            <span class="tiny">CPPP — Award of Contract</span>
+            
+              <span class="badge outline">idle</span>
+            
+          </li>
+          
+          <li>
+            <span class="tiny">CPPP / eprocure.gov.in —...</span>
+            
+              <span class="badge outline">idle</span>
+            
+          </li>
+          
+          <li>
+            <span class="tiny">data.gov.in (OGD Platform)</span>
+            
+              <span class="badge outline">idle</span>
+            
+          </li>
+          
+          <li>
+            <span class="tiny">Demo corpus (synthetic)</span>
+            
+              <span class="badge outline">idle</span>
+            
+          </li>
+          
+          <li>
+            <span class="tiny">eTenders.gov.in (GePNIC)</span>
+            
+              <span class="badge outline">idle</span>
+            
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="alert info mt-4">
+  <span class="icon">i</span>
+  <div>
+    <strong>Reading these numbers.</strong> Coverage is a property of the corpus, not a promise.
+    A tender whose result was never published will never show a price ladder, and an estimated
+    tender value is labelled as an estimate rather than presented as an award.
+  </div>
+</div>
+
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong style="color:var(--ink-2)">Every figure carries its source.</strong>
+       Prices are shown with their basis — awarded, L1/L2/L3 quote, estimated or market —
+       and bases are never blended in a statistic.</p>
+    <p>Individual officer names are not searchable or exportable. Tender documents remain the
+       property of the issuing department; this platform shows extracted facts and links to the origin.</p>
+  </div>
+</footer>
+
+
+
+<script>
+document.addEventListener('submit', function (e) {
+  e.preventDefault();
+  alert('This is a static preview. Run the app from the repository to use this feature.');
+}, true);
+document.addEventListener('click', function (e) {
+  const a = e.target.closest('a');
+  if (a && a.getAttribute('href') === '#') e.preventDefault();
+}, true);
+</script>
+</body>
+</html>

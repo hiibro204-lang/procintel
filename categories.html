@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Categories — Procurement Intelligence</title>
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="static/app.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C8102E'/><text x='16' y='23' font-family='Helvetica' font-size='18' font-weight='bold' fill='white' text-anchor='middle'>P</text></svg>">
+</head>
+<body>
+
+
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">P</span>
+      <span class="brand-name">Procurement Intelligence</span>
+      <span class="brand-tag">beta</span>
+    </a>
+
+    <nav class="nav">
+      
+        <a href="index.html" class="">Overview</a>
+      
+        <a href="search.html" class="">Tenders</a>
+      
+        <a href="#" class="">Prices</a>
+      
+        <a href="assistant.html" class="">Assistant</a>
+      
+        <a href="sources.html" class="">Sources</a>
+      
+        <a href="settings.html" class="">Settings</a>
+      
+    </nav>
+
+    <div class="topbar-right">
+      
+        <a class="chip off" href="settings.html" title="Paste an API key to turn on model extraction and phrasing">
+          <span class="dot"></span> AI off
+        </a>
+      
+      <a class="btn sm" href="https://github.com/hiibro204-lang/procintel#api">API</a>
+    </div>
+  </div>
+</header>
+<div class="wrap" style="padding-top:14px">
+  <div class="alert info">
+    <span class="icon">i</span>
+    <div>
+      <strong>Static preview.</strong> Every screen below is real output from the app, rendered
+      against a seeded demo corpus. The interactive version — live API, assistant answers, saving
+      your API key — runs from the repository:
+      <a href="https://codespaces.new/hiibro204-lang/procintel">open it in GitHub Codespaces</a> or
+      <a href="https://github.com/hiibro204-lang/procintel">read the source</a>.
+    </div>
+  </div>
+</div>
+
+
+<main>
+  <div class="wrap">
+    
+<p class="eyebrow">Taxonomy</p>
+<h1 class="mt-1">Categories</h1>
+<p class="muted mt-1" style="max-width:640px">
+  Our own category tree. Source vocabularies map onto it, so adding a portal adds mappings
+  rather than restructuring anything.
+</p>
+<div class="grid g3 mt-4">
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="strong">Civil Works &amp; Construction</div>
+      <div class="tiny muted mt-1">0 tender(s)</div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="strong">Electrical &amp; Lighting</div>
+      <div class="tiny muted mt-1">5 tender(s)</div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="strong">HVAC &amp; Mechanical</div>
+      <div class="tiny muted mt-1">5 tender(s)</div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="strong">IT Hardware &amp; Software</div>
+      <div class="tiny muted mt-1">19 tender(s)</div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="strong">Medical &amp; Laboratory</div>
+      <div class="tiny muted mt-1">0 tender(s)</div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="strong">Office &amp; Furniture</div>
+      <div class="tiny muted mt-1">12 tender(s)</div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="strong">Safety &amp; Security</div>
+      <div class="tiny muted mt-1">0 tender(s)</div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="strong">Services &amp; Manpower</div>
+      <div class="tiny muted mt-1">0 tender(s)</div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="strong">Uncategorised</div>
+      <div class="tiny muted mt-1">0 tender(s)</div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="strong">Vehicles &amp; Transport</div>
+      <div class="tiny muted mt-1">0 tender(s)</div>
+    </div>
+  </div>
+  
+</div>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong style="color:var(--ink-2)">Every figure carries its source.</strong>
+       Prices are shown with their basis — awarded, L1/L2/L3 quote, estimated or market —
+       and bases are never blended in a statistic.</p>
+    <p>Individual officer names are not searchable or exportable. Tender documents remain the
+       property of the issuing department; this platform shows extracted facts and links to the origin.</p>
+  </div>
+</footer>
+
+
+
+<script>
+document.addEventListener('submit', function (e) {
+  e.preventDefault();
+  alert('This is a static preview. Run the app from the repository to use this feature.');
+}, true);
+document.addEventListener('click', function (e) {
+  const a = e.target.closest('a');
+  if (a && a.getAttribute('href') === '#') e.preventDefault();
+}, true);
+</script>
+</body>
+</html>

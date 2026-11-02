@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Price intelligence — Procurement Intelligence</title>
+  <meta name="color-scheme" content="light">
+  <link rel="stylesheet" href="static/app.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C8102E'/><text x='16' y='23' font-family='Helvetica' font-size='18' font-weight='bold' fill='white' text-anchor='middle'>P</text></svg>">
+</head>
+<body>
+
+
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">P</span>
+      <span class="brand-name">Procurement Intelligence</span>
+      <span class="brand-tag">beta</span>
+    </a>
+
+    <nav class="nav">
+      
+        <a href="index.html" class="">Overview</a>
+      
+        <a href="search.html" class="">Tenders</a>
+      
+        <a href="#" class="active">Prices</a>
+      
+        <a href="assistant.html" class="">Assistant</a>
+      
+        <a href="sources.html" class="">Sources</a>
+      
+        <a href="settings.html" class="">Settings</a>
+      
+    </nav>
+
+    <div class="topbar-right">
+      
+        <a class="chip off" href="settings.html" title="Paste an API key to turn on model extraction and phrasing">
+          <span class="dot"></span> AI off
+        </a>
+      
+      <a class="btn sm" href="https://github.com/hiibro204-lang/procintel#api">API</a>
+    </div>
+  </div>
+</header>
+<div class="wrap" style="padding-top:14px">
+  <div class="alert info">
+    <span class="icon">i</span>
+    <div>
+      <strong>Static preview.</strong> Every screen below is real output from the app, rendered
+      against a seeded demo corpus. The interactive version — live API, assistant answers, saving
+      your API key — runs from the repository:
+      <a href="https://codespaces.new/hiibro204-lang/procintel">open it in GitHub Codespaces</a> or
+      <a href="https://github.com/hiibro204-lang/procintel">read the source</a>.
+    </div>
+  </div>
+</div>
+
+
+<main>
+  <div class="wrap">
+    
+
+<div class="between">
+  <div>
+    <p class="eyebrow">Historical price intelligence</p>
+    <h1 class="mt-1">What this actually costs</h1>
+    <p class="muted mt-1" style="max-width:640px">
+      Comparable prices for one canonical product, one basis at a time. A statistic is never shown
+      without its sample size, and an estimated value never enters an awarded series.
+    </p>
+  </div>
+</div>
+
+<div class="side mt-4">
+  <aside class="card">
+    <div class="card-head"><div class="card-title">Products with prices</div></div>
+    <ul class="list" style="padding:0; max-height:560px; overflow:auto">
+      
+      <li style="padding:0">
+        <a href="#"
+           style="display:block; padding:10px 16px; color:var(--ink-2);
+                  ">
+          <span class="tiny" style="font-weight:400">
+            Laptop Core i7 14 inch with 16GB RAM
+          </span>
+        </a>
+      </li>
+      
+      <li style="padding:0">
+        <a href="prices-3.html"
+           style="display:block; padding:10px 16px; color:var(--ink-2);
+                  ">
+          <span class="tiny" style="font-weight:400">
+            Ergonomic Office Chair High Back Mesh...
+          </span>
+        </a>
+      </li>
+      
+      <li style="padding:0">
+        <a href="prices-6.html"
+           style="display:block; padding:10px 16px; color:var(--ink-2);
+                  ">
+          <span class="tiny" style="font-weight:400">
+            LED Luminaire for High Bay Lighting 150W
+          </span>
+        </a>
+      </li>
+      
+      <li style="padding:0">
+        <a href="#"
+           style="display:block; padding:10px 16px; color:var(--ink-2);
+                  ">
+          <span class="tiny" style="font-weight:400">
+            Split Air Conditioner 1.5 Ton Inverter
+          </span>
+        </a>
+      </li>
+      
+      <li style="padding:0">
+        <a href="#"
+           style="display:block; padding:10px 16px; color:var(--ink-2);
+                  ">
+          <span class="tiny" style="font-weight:400">
+            Steel Almirah 6 feet with Locker
+          </span>
+        </a>
+      </li>
+      
+      <li style="padding:0">
+        <a href="prices-1.html"
+           style="display:block; padding:10px 16px; color:var(--red-dark);
+                  background:var(--red-soft); border-left:3px solid var(--red);">
+          <span class="tiny" style="font-weight:600">
+            Interactive Flat Panel Display 75 Inch with CPU
+          </span>
+        </a>
+      </li>
+      
+      <li style="padding:0">
+        <a href="prices-4.html"
+           style="display:block; padding:10px 16px; color:var(--ink-2);
+                  ">
+          <span class="tiny" style="font-weight:400">
+            Desktop Computer Core i5 with 8GB RAM...
+          </span>
+        </a>
+      </li>
+      
+      <li style="padding:0">
+        <a href="#"
+           style="display:block; padding:10px 16px; color:var(--ink-2);
+                  ">
+          <span class="tiny" style="font-weight:400">
+            Online UPS 5 kVA with Battery Bank
+          </span>
+        </a>
+      </li>
+      
+    </ul>
+  </aside>
+
+  <section class="stack">
+    
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Interactive Flat Panel Display 75 Inch with CPU</div>
+          <div class="card-sub">
+            basis <strong>awarded</strong> · 4 observation(s) ·
+            coverage 100.0% ·
+            tier summary
+          </div>
+        </div>
+        <form method="get" class="row" style="gap:6px">
+          <input type="hidden" name="product_id" value="1">
+          <select class="select" name="basis" onchange="this.form.submit()" style="width:auto; padding:7px 10px; font-size:12.5px">
+            
+            <option value="awarded" selected>awarded</option>
+            
+            <option value="l1_quote" >l1_quote</option>
+            
+            <option value="l2_quote" >l2_quote</option>
+            
+            <option value="l3_quote" >l3_quote</option>
+            
+          </select>
+        </form>
+      </div>
+
+      <div class="card-body">
+        
+          <div class="grid g4">
+            <div class="kpi flat"><div class="kpi-label">Records</div><div class="kpi-value">4</div></div>
+            <div class="kpi flat"><div class="kpi-label">Median</div><div class="kpi-value red">₹1,62,081.32</div></div>
+            <div class="kpi flat"><div class="kpi-label">Lowest</div><div class="kpi-value">₹1,46,309.18</div></div>
+            <div class="kpi flat"><div class="kpi-label">Highest</div><div class="kpi-value">₹1,65,291.23</div></div>
+          </div>
+
+          
+            <div class="alert warn mt-3"><span class="icon">!</span><div>small sample (n=4); treat as indicative only</div></div>
+          
+        
+      </div>
+
+      
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead>
+            <tr><th>Observed</th><th>Tender</th><th class="num">Qty</th>
+                <th class="num">Unit price</th><th class="num">Normalised</th><th>State</th></tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <td class="muted tiny">2026-02-26</td>
+              <td><a class="tiny" href="tender-29.html">#29</a></td>
+              <td class="num muted">11</td>
+              <td class="num muted">₹1,93,567.32</td>
+              <td class="num strong">₹1,64,040.10</td>
+              <td class="muted tiny">Uttar Pradesh</td>
+            </tr>
+            
+            <tr>
+              <td class="muted tiny">2025-09-29</td>
+              <td><a class="tiny" href="tender-20.html">#20</a></td>
+              <td class="num muted">12</td>
+              <td class="num muted">₹1,95,043.65</td>
+              <td class="num strong">₹1,65,291.23</td>
+              <td class="muted tiny">Madhya Pradesh</td>
+            </tr>
+            
+            <tr>
+              <td class="muted tiny">2025-02-05</td>
+              <td><a class="tiny" href="tender-1.html">#1</a></td>
+              <td class="num muted">11</td>
+              <td class="num muted">₹1,72,644.84</td>
+              <td class="num strong">₹1,46,309.18</td>
+              <td class="muted tiny">Gujarat</td>
+            </tr>
+            
+            <tr>
+              <td class="muted tiny">2024-11-19</td>
+              <td><a class="tiny" href="tender-16.html">#16</a></td>
+              <td class="num muted">2</td>
+              <td class="num muted">₹1,88,944.58</td>
+              <td class="num strong">₹1,60,122.53</td>
+              <td class="muted tiny">Gujarat</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+
+    <div class="card accent">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Bid recommendation</div>
+          <div class="card-sub">Every input and every step is shown — no hidden score</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end">
+          <label class="field" style="width:150px">
+            <span class="label">Landed cost / unit</span>
+            <input class="input" id="cost" type="number" min="0" step="1" placeholder="12000">
+          </label>
+          <label class="field" style="width:120px">
+            <span class="label">Target margin %</span>
+            <input class="input" id="margin" type="number" min="0" max="90" step="1" value="15">
+          </label>
+          <label class="field" style="width:150px">
+            <span class="label">Stance</span>
+            <select class="select" id="stance">
+              <option value="aggressive">aggressive</option>
+              <option value="balanced" selected>balanced</option>
+              <option value="defensive">defensive</option>
+            </select>
+          </label>
+          <button class="btn primary" onclick="recommend(1)">Recommend</button>
+        </div>
+        <div id="rec-out" class="mt-3"></div>
+      </div>
+    </div>
+
+    
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Comparable set, by tier</div>
+          <div class="card-sub">A comparison across tiers is weaker evidence, so tiers stay separate</div>
+        </div>
+      </div>
+      <div class="card-body stack">
+        
+        <div style="border:1px solid var(--line); border-radius:8px; overflow:hidden">
+          <div class="row between" style="padding:8px 12px; background:var(--line-2)">
+            <span class="tiny" style="font-weight:600">Tier 1 — exact product, same quarter, same quantity band</span>
+            <span class="tiny muted">n = 2</span>
+          </div>
+          
+          <table class="tbl">
+            <tbody>
+              
+              <tr>
+                <td class="tiny muted">2026-02-26 · l1_quote · qty 11</td>
+                <td class="num tiny strong">₹1,51,224.47</td>
+              </tr>
+              
+              <tr>
+                <td class="tiny muted">2026-02-26 · awarded · qty 11</td>
+                <td class="num tiny strong">₹1,64,040.10</td>
+              </tr>
+              
+            </tbody>
+          </table>
+          
+        </div>
+        
+        <div style="border:1px solid var(--line); border-radius:8px; overflow:hidden">
+          <div class="row between" style="padding:8px 12px; background:var(--line-2)">
+            <span class="tiny" style="font-weight:600">Tier 2 — exact product, wider time window</span>
+            <span class="tiny muted">n = 6</span>
+          </div>
+          
+          <table class="tbl">
+            <tbody>
+              
+              <tr>
+                <td class="tiny muted">2025-09-29 · l1_quote · qty 12</td>
+                <td class="num tiny strong">₹1,65,291.23</td>
+              </tr>
+              
+              <tr>
+                <td class="tiny muted">2025-09-29 · awarded · qty 12</td>
+                <td class="num tiny strong">₹1,65,291.23</td>
+              </tr>
+              
+              <tr>
+                <td class="tiny muted">2025-02-05 · l1_quote · qty 11</td>
+                <td class="num tiny strong">₹1,34,878.78</td>
+              </tr>
+              
+              <tr>
+                <td class="tiny muted">2025-02-05 · awarded · qty 11</td>
+                <td class="num tiny strong">₹1,46,309.18</td>
+              </tr>
+              
+              <tr>
+                <td class="tiny muted">2024-11-19 · l1_quote · qty 2</td>
+                <td class="num tiny strong">₹1,60,122.53</td>
+              </tr>
+              
+              <tr>
+                <td class="tiny muted">2024-11-19 · awarded · qty 2</td>
+                <td class="num tiny strong">₹1,60,122.53</td>
+              </tr>
+              
+            </tbody>
+          </table>
+          
+        </div>
+        
+        <div style="border:1px solid var(--line); border-radius:8px; overflow:hidden">
+          <div class="row between" style="padding:8px 12px; background:var(--line-2)">
+            <span class="tiny" style="font-weight:600">Tier 3 — same category (weaker evidence)</span>
+            <span class="tiny muted">n = 30</span>
+          </div>
+          
+          <table class="tbl">
+            <tbody>
+              
+              <tr>
+                <td class="tiny muted">2025-11-12 · awarded · qty 80</td>
+                <td class="num tiny strong">₹76,946.88</td>
+              </tr>
+              
+              <tr>
+                <td class="tiny muted">2024-12-26 · awarded · qty 33</td>
+                <td class="num tiny strong">₹67,953.02</td>
+              </tr>
+              
+              <tr>
+                <td class="tiny muted">2025-07-25 · awarded · qty 75</td>
+                <td class="num tiny strong">₹38,559.77</td>
+              </tr>
+              
+              <tr>
+                <td class="tiny muted">2026-03-24 · awarded · qty 41</td>
+                <td class="num tiny strong">₹73,262.44</td>
+              </tr>
+              
+              <tr>
+                <td class="tiny muted">2025-11-28 · awarded · qty 29</td>
+                <td class="num tiny strong">₹78,155.22</td>
+              </tr>
+              
+              <tr>
+                <td class="tiny muted">2026-03-18 · awarded · qty 3</td>
+                <td class="num tiny strong">₹60,008.05</td>
+              </tr>
+              
+            </tbody>
+          </table>
+          
+        </div>
+        
+      </div>
+    </div>
+    
+
+    
+  </section>
+</div>
+
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong style="color:var(--ink-2)">Every figure carries its source.</strong>
+       Prices are shown with their basis — awarded, L1/L2/L3 quote, estimated or market —
+       and bases are never blended in a statistic.</p>
+    <p>Individual officer names are not searchable or exportable. Tender documents remain the
+       property of the issuing department; this platform shows extracted facts and links to the origin.</p>
+  </div>
+</footer>
+
+
+<script>
+const money = v => (v === null || v === undefined) ? '—'
+  : '₹' + Number(v).toLocaleString('en-IN', {maximumFractionDigits: 0});
+
+async function recommend(productId) {
+  const out = document.getElementById('rec-out');
+  out.innerHTML = '<p class="tiny muted">Calculating…</p>';
+  const params = new URLSearchParams();
+  const cost = document.getElementById('cost').value;
+  if (cost) params.set('landed_cost', cost);
+  params.set('target_margin_pct', document.getElementById('margin').value);
+  params.set('competitive_stance', document.getElementById('stance').value);
+
+  const res = await fetch(`/api/v1/products/${productId}/recommend?${params}`, {method: 'POST'});
+  if (!res.ok) { out.innerHTML = '<div class="alert err">Request failed.</div>'; return; }
+  const d = await res.json();
+
+  if (d.range.mid === null) {
+    out.innerHTML = `<div class="alert warn"><span class="icon">!</span><div>
+      No recommendation available. ${(d.notes || []).join(' ')}</div></div>`;
+    return;
+  }
+
+  const rows = (d.steps || []).map(s => `<tr>
+      <td class="tiny strong">${s.step}</td>
+      <td class="tiny muted">${s.detail || ''}</td>
+      <td class="num tiny">${s.value !== undefined ? money(s.value) : (s.factor !== undefined ? '×' + s.factor : '')}</td>
+    </tr>`).join('');
+
+  out.innerHTML = `
+    <div class="card accent" style="box-shadow:none">
+      <div class="card-body">
+        <div class="row between">
+          <div>
+            <div class="kpi-label">Recommended range per unit</div>
+            <div class="kpi-value red">${money(d.range.low)} – ${money(d.range.high)}</div>
+            <div class="kpi-note">midpoint ${money(d.range.mid)} · based on ${d.inputs.n_observations} awarded record(s)</div>
+          </div>
+          <span class="badge ${d.confidence === 'high' ? 'green' : (d.confidence === 'medium' ? 'amber' : '')}">
+            confidence: ${d.confidence}</span>
+        </div>
+        <table class="tbl mt-3"><tbody>${rows}</tbody></table>
+        ${(d.notes || []).map(n => `<div class="alert warn mt-2"><span class="icon">!</span><div class="tiny">${n}</div></div>`).join('')}
+      </div>
+    </div>`;
+}
+</script>
+
+
+<script>
+document.addEventListener('submit', function (e) {
+  e.preventDefault();
+  alert('This is a static preview. Run the app from the repository to use this feature.');
+}, true);
+document.addEventListener('click', function (e) {
+  const a = e.target.closest('a');
+  if (a && a.getAttribute('href') === '#') e.preventDefault();
+}, true);
+</script>
+</body>
+</html>
