@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, Form, Query, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import func, or_, select
@@ -28,7 +28,9 @@ from ..models import (
     Supplier,
     Tender,
 )
+from ..llm_config import list_models, suggest_models, validate_key
 from ..registry import check
+from ..settings_store import SettingsStore
 from .api import tender_detail
 
 TEMPLATES = Jinja2Templates(directory=str(Path(__file__).resolve().parent.parent / "templates"))
@@ -119,6 +121,7 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
             by_basis=by_basis,
             recent=recent,
             sources=sources,
+            llm=SettingsStore(db).public_view(),
         ),
     )
 
@@ -211,8 +214,8 @@ def prices(
 
 
 @router.get("/assistant", response_class=HTMLResponse)
-def assistant_page(request: Request):
-    return TEMPLATES.TemplateResponse(request, "assistant.html", _ctx(request))
+def assistant_page(request: Request, db: Session = Depends(get_db)):
+    return TEMPLATES.TemplateResponse(request, "assistant.html", _ctx(request, llm=SettingsStore(db).public_view()))
 
 
 @router.get("/sources", response_class=HTMLResponse)
@@ -234,4 +237,105 @@ def categories_page(request: Request, db: Session = Depends(get_db)):
     return TEMPLATES.TemplateResponse(
         request,
         "categories.html", _ctx(request, categories=cats, counts=counts)
+    )
+
+
+# --------------------------------------------------------------------------- #
+# Settings — the "paste a key and it works" screen
+# --------------------------------------------------------------------------- #
+@router.get("/settings", response_class=HTMLResponse)
+def settings_page(
+    request: Request,
+    db: Session = Depends(get_db),
+    message: str | None = None,
+    tone: str | None = None,
+):
+    store = SettingsStore(db)
+    runtime = store.llm()
+    catalogue = list_models(runtime.base_url, runtime.api_key, timeout=5.0)
+    return TEMPLATES.TemplateResponse(
+        request,
+        "settings.html",
+        _ctx(
+            request,
+            llm=store.public_view(),
+            models=catalogue,
+            suggested=suggest_models(catalogue),
+            message=message,
+            tone=tone,
+        ),
+    )
+
+
+@router.post("/settings", response_class=HTMLResponse)
+def settings_save(
+    request: Request,
+    db: Session = Depends(get_db),
+    api_key: str = Form(""),
+    model_extraction: str = Form(""),
+    model_assistant: str = Form(""),
+    action: str = Form("save"),
+    force: str = Form(""),
+):
+    store = SettingsStore(db)
+    runtime = store.llm()
+    catalogue = list_models(runtime.base_url, runtime.api_key, timeout=5.0)
+
+    def render(message: str, tone: str = "info"):
+        return TEMPLATES.TemplateResponse(
+            request,
+            "settings.html",
+            _ctx(
+                request,
+                llm=store.public_view(),
+                models=catalogue,
+                suggested=suggest_models(catalogue),
+                message=message,
+                tone=tone,
+            ),
+        )
+
+    if action == "clear":
+        result = store.clear_llm(actor="ui")
+        if result.configured:
+            return render("Stored key removed. The key set in the environment is still in use.", "info")
+        return render("API key removed. Extraction falls back to deterministic rules.", "ok")
+
+    candidate = api_key.strip() or runtime.api_key
+
+    if action == "test":
+        if not candidate:
+            return render("Paste a key first, then test it.", "warn")
+        check = validate_key(candidate, runtime.base_url)
+        return render(check.message, "ok" if check.ok else "error")
+
+    # action == save
+    verified = False
+    check_message = None
+    if candidate:
+        check = validate_key(candidate, runtime.base_url)
+        check_message = check.message
+        verified = check.ok
+        if not check.ok and not force:
+            return render(
+                f"{check.message} Nothing was saved — fix the key, or use "
+                f"\"Save without verifying\" if this server cannot reach the provider.",
+                "error",
+            )
+
+    store.save_llm(
+        api_key=api_key.strip() or None,
+        model_extraction=model_extraction or None,
+        model_assistant=model_assistant or None,
+        actor="ui",
+        verified=verified,
+    )
+    if not candidate:
+        return render("Models updated. No API key is configured yet.", "info")
+    if verified:
+        return render(f"Connected. {check_message}", "ok")
+    return render(
+        "Saved without verification — the provider was not reachable from this server. "
+        "The key will be used on the next request.",
+        "warn",
     )
