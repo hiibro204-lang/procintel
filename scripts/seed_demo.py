@@ -245,10 +245,18 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Seed a synthetic demo corpus")
     parser.add_argument("--tenders", type=int, default=60)
     parser.add_argument("--reset", action="store_true", help="drop and recreate the schema first")
+    parser.add_argument(
+        "--if-empty",
+        action="store_true",
+        help="seed only when the corpus is empty (safe to call on every boot)",
+    )
     args = parser.parse_args()
 
     init_db(drop=args.reset)
     with session_scope() as db:
+        if args.if_empty and db.query(Tender).count() > 0:
+            print("corpus already populated; skipping seed")
+            return
         counts = seed(db, n_tenders=args.tenders)
     print("seeded:", counts)
 

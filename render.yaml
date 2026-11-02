@@ -1,0 +1,27 @@
+# One-click deploy blueprint for Render.
+#
+# Free tier notes: there is no persistent disk, so the SQLite database and the
+# document archive live in /tmp and reset when the service restarts or redeploys.
+# That is fine for a demo — the app reseeds itself on boot — but for anything real
+# set DATABASE_URL to a managed PostgreSQL instance and give the archive a disk.
+services:
+  - type: web
+    name: procintel
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m scripts.seed_demo --tenders 60 --if-empty && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.6"
+      - key: DATABASE_URL
+        value: sqlite:////tmp/procintel.db
+      - key: ARCHIVE_DIR
+        value: /tmp/archive
+      # Leave blank here — paste the key in the app's /settings screen instead,
+      # where it is validated, encrypted at rest and never returned.
+      - key: OPENROUTER_API_KEY
+        sync: false
