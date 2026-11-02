@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% block title %}Settings — Procurement Intelligence{% endblock %}
+{% block content %}
+
+<div class="between">
+  <div>
+    <p class="eyebrow">Configuration</p>
+    <h1 class="mt-1">Settings</h1>
+    <p class="muted mt-1" style="max-width:640px">
+      Paste an API key and the platform starts using a model for document extraction and answer
+      phrasing. No redeploy, no environment file, no restart.
+    </p>
+  </div>
+  <div class="row">
+    {% if llm.configured %}
+      <span class="badge green">connected</span>
+    {% else %}
+      <span class="badge amber">not connected</span>
+    {% endif %}
+  </div>
+</div>
+
+{% if message %}
+<div class="alert {{ 'ok' if tone == 'ok' else ('err' if tone == 'error' else ('warn' if tone == 'warn' else 'info')) }} mt-3">
+  <span class="icon">{{ '✓' if tone == 'ok' else ('!' if tone in ['error','warn'] else 'i') }}</span>
+  <div>{{ message }}</div>
+</div>
+{% endif %}
+
+<div class="grid g2 mt-4" style="align-items:start">
+
+  <!-- ================= AI connection ================= -->
+  <div class="card accent">
+    <div class="card-head">
+      <div>
+        <div class="card-title">AI connection</div>
+        <div class="card-sub">OpenRouter — one key, any model</div>
+      </div>
+      {% if llm.configured %}
+        <span class="chip ok"><span class="dot"></span> {{ llm.source }}</span>
+      {% else %}
+        <span class="chip off"><span class="dot"></span> off</span>
+      {% endif %}
+    </div>
+
+    <form method="post" action="/settings" class="card-body">
+      <div class="field">
+        <label class="label" for="api_key">API key</label>
+        <div class="row" style="gap:8px">
+          <input class="input mono grow" id="api_key" name="api_key" type="password"
+                 autocomplete="off" spellcheck="false"
+                 placeholder="{{ llm.masked_key if llm.configured else 'sk-or-v1-…' }}">
+          <button type="button" class="btn sm" id="reveal" aria-label="Show or hide the key">Show</button>
+        </div>
+        <p class="hint">
+          {% if llm.configured %}
+            A key is stored ({{ llm.masked_key }}). Leave this empty to keep it, or paste a new one to replace it.
+          {% else %}
+            Paste the whole key — it starts with <code>sk-or-</code>. Get one at
+            <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a>.
+          {% endif %}
+        </p>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="label" for="model_extraction">Extraction model</label>
+          <input class="input mono" id="model_extraction" name="model_extraction" list="model-list"
+                 value="{{ llm.model_extraction }}" spellcheck="false">
+          <p class="hint">Bulk document reading. Cheap and fast is right here.</p>
+        </div>
+        <div class="field">
+          <label class="label" for="model_assistant">Assistant model</label>
+          <input class="input mono" id="model_assistant" name="model_assistant" list="model-list"
+                 value="{{ llm.model_assistant }}" spellcheck="false">
+          <p class="hint">Phrases answers over verified facts. Stronger is better.</p>
+        </div>
+      </div>
+
+      <datalist id="model-list">
+        {% for m in models %}<option value="{{ m.id }}">{{ m.name }}</option>{% endfor %}
+      </datalist>
+
+      <div class="row mt-2" style="gap:8px; flex-wrap:wrap">
+        <span class="tiny muted">Suggested:</span>
+        <button type="button" class="btn sm js-fill"
+                data-extraction="{{ suggested.extraction }}" data-assistant="{{ suggested.assistant }}">
+          Use suggested models
+        </button>
+        <span class="tiny muted">{{ models|length }} models in the catalogue</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="row" style="gap:8px; flex-wrap:wrap">
+        <button class="btn primary" name="action" value="save" type="submit">Save &amp; connect</button>
+        <button class="btn" name="action" value="test" type="submit">Test only</button>
+        {% if llm.configured %}
+          <button class="btn danger" name="action" value="clear" type="submit"
+                  onclick="return confirm('Remove the stored API key?')">Remove key</button>
+        {% endif %}
+      </div>
+      <p class="hint mt-2">
+        A rejected key is never saved, so a typo cannot silently become the configured key.
+        If this server cannot reach the provider at all, you can still store the key:
+      </p>
+      <button class="btn sm mt-1" type="submit" name="action" value="save" formnovalidate
+              onclick="document.getElementById('force-field').value='1'">Save without verifying</button>
+      <input type="hidden" name="force" id="force-field" value="">
+    </form>
+
+    <div class="card-foot">
+      <dl class="kv">
+        <dt>Status</dt>
+        <dd>{% if llm.configured %}Active — used on the next request{% else %}No key configured{% endif %}</dd>
+        <dt>Source</dt>
+        <dd>{{ llm.source }}</dd>
+        <dt>Stored key</dt>
+        <dd class="mono">{{ llm.masked_key or '—' }}</dd>
+        <dt>Verified</dt>
+        <dd>{{ llm.verified_at|shortdate if llm.verified_at else 'not verified' }}</dd>
+        <dt>Encryption</dt>
+        <dd>{{ llm.encryption }} at rest</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- ================= Right column ================= -->
+  <div class="stack">
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">How your key is handled</div></div>
+      <div class="card-body">
+        <ul class="list">
+          <li>
+            <div>
+              <strong>Validated before it is saved.</strong>
+              <div class="tiny muted">We ask the provider who the key belongs to. A rejected key is never stored.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Encrypted at rest.</strong>
+              <div class="tiny muted">Fernet encryption with a key held outside the database. A dump or backup does not expose it.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Never returned.</strong>
+              <div class="tiny muted">The API only ever emits the masked form. Nothing logs the key.</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Effective immediately.</strong>
+              <div class="tiny muted">The next extraction or question uses it. No restart.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">What the key changes</div>
+      </div>
+      <div class="card-body">
+        <table class="tbl">
+          <thead><tr><th>Capability</th><th>Without a key</th><th>With a key</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="strong">Tender search &amp; price data</td>
+              <td><span class="badge green">works</span></td>
+              <td><span class="badge green">works</span></td>
+            </tr>
+            <tr>
+              <td class="strong">Field extraction from PDFs</td>
+              <td>rules only — money, dates, HSN, EMD</td>
+              <td>rules + model, every value cited</td>
+            </tr>
+            <tr>
+              <td class="strong">Assistant answers</td>
+              <td>templated from records</td>
+              <td>same facts, phrased — figures re-verified</td>
+            </tr>
+            <tr>
+              <td class="strong">Fabrication risk</td>
+              <td><span class="badge green">none possible</span></td>
+              <td><span class="badge green">blocked by verifier</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">Collection policy</div></div>
+      <div class="card-body">
+        <p class="tiny muted mb-0">
+          What the platform is allowed to collect is set by the source registry, not by this page.
+          Each source carries its robots status, terms summary, rate limit and review date, and a
+          connector will not run without a current record.
+        </p>
+      </div>
+      <div class="card-foot"><a class="btn sm" href="/sources">Review sources →</a></div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const keyInput = document.getElementById('api_key');
+  const reveal = document.getElementById('reveal');
+  reveal?.addEventListener('click', () => {
+    const shown = keyInput.type === 'text';
+    keyInput.type = shown ? 'password' : 'text';
+    reveal.textContent = shown ? 'Show' : 'Hide';
+  });
+
+  document.querySelectorAll('.js-fill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('model_extraction').value = btn.dataset.extraction;
+      document.getElementById('model_assistant').value = btn.dataset.assistant;
+    });
+  });
+
+  // Trim stray whitespace from a pasted key — the most common cause of a 401.
+  keyInput?.addEventListener('blur', () => { keyInput.value = keyInput.value.trim(); });
+</script>
+{% endblock %}

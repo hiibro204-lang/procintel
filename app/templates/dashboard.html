@@ -2,118 +2,178 @@
 {% block title %}Overview — Procurement Intelligence{% endblock %}
 {% block content %}
 
-<div class="flex flex-wrap items-end justify-between gap-4">
+<div class="between">
   <div>
-    <h1 class="text-2xl font-semibold tracking-tight text-navy">Executive overview</h1>
-    <p class="mt-1 text-sm text-slate-500">Coverage of the corpus, and how much of it carries a published price ladder.</p>
+    <p class="eyebrow">Executive overview</p>
+    <h1 class="mt-1">What the corpus holds</h1>
+    <p class="muted mt-1">Coverage, and how much of it carries a published price ladder.</p>
   </div>
-  <form action="/search" class="flex gap-2">
-    <input name="q" placeholder="Search tenders, e.g. office chair"
-           class="w-64 rounded border border-rule px-3 py-2 text-sm focus:border-teal focus:outline-none">
-    <button class="rounded bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">Search</button>
+  <form action="/search" class="row" style="gap:8px">
+    <input class="input" name="q" placeholder="Search tenders — office chair, HVAC, LED…" style="width:290px">
+    <button class="btn primary">Search</button>
   </form>
 </div>
 
-<div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-  {% set cards = [
-    ('Tender records', stats.tenders, 'across all connected sources'),
-    ('With price ladder', stats.with_ladder, stats.ladder_pct ~ '% of records'),
-    ('Awards', stats.awards, 'contracts with a recorded value'),
-    ('Price observations', stats.observations, 'awarded and L1–L3 quotes')
-  ] %}
-  {% for label, value, sub in cards %}
-  <div class="rounded-lg border border-rule bg-white p-4">
-    <p class="text-xs uppercase tracking-wider text-slate-500">{{ label }}</p>
-    <p class="mt-1 text-2xl font-semibold text-navy">{{ '{:,}'.format(value) }}</p>
-    <p class="mt-0.5 text-xs text-slate-500">{{ sub }}</p>
-  </div>
-  {% endfor %}
-</div>
-
-<div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-  {% set cards2 = [
-    ('Products', stats.products), ('Suppliers', stats.suppliers),
-    ('Buying organisations', stats.buyers),
-    ('Runnable sources', stats.runnable_sources ~ ' / ' ~ stats.total_sources)
-  ] %}
-  {% for label, value in cards2 %}
-  <div class="rounded-lg border border-rule bg-mist px-4 py-3">
-    <p class="text-xs uppercase tracking-wider text-slate-500">{{ label }}</p>
-    <p class="text-lg font-semibold text-navy">{{ value }}</p>
-  </div>
-  {% endfor %}
-</div>
-
-<div class="mt-8 grid gap-6 lg:grid-cols-3">
-  <div class="lg:col-span-2 rounded-lg border border-rule">
-    <div class="flex items-center justify-between border-b border-rule px-4 py-3">
-      <h2 class="text-sm font-semibold text-navy">Most recent records</h2>
-      <a href="/search" class="text-xs text-teal hover:underline">View all</a>
+{% if not (llm and llm.configured) %}
+<div class="card accent mt-4">
+  <div class="card-body between">
+    <div style="max-width:640px">
+      <div class="row" style="gap:8px">
+        <span class="badge red">action needed</span>
+        <strong>Connect a model to finish the setup</strong>
+      </div>
+      <p class="muted mt-1 mb-0 tiny">
+        Search, price intelligence and the assistant already work on your data. Paste an API key and
+        PDF extraction gains model reading, and answers get phrased instead of templated —
+        every figure still re-verified against the record.
+      </p>
     </div>
-    <table class="w-full text-sm">
-      <thead class="bg-mist text-left text-xs uppercase tracking-wider text-slate-500">
-        <tr><th class="px-4 py-2">Tender</th><th class="px-4 py-2">Buyer</th>
-            <th class="px-4 py-2">State</th><th class="px-4 py-2 text-right">Closing</th></tr>
-      </thead>
-      <tbody class="divide-y divide-rule">
-        {% for t in recent %}
-        <tr class="hover:bg-mist/60">
-          <td class="px-4 py-2">
-            <a href="/tender/{{ t.id }}" class="font-medium text-navy hover:text-teal">{{ t.title|truncate(72) }}</a>
-            <div class="text-xs text-slate-400">{{ t.portal_tender_id }}</div>
-          </td>
-          <td class="px-4 py-2 text-slate-600">{{ (t.organisation.canonical_name if t.organisation else '—')|truncate(34) }}</td>
-          <td class="px-4 py-2 text-slate-600">{{ t.state or '—' }}</td>
-          <td class="px-4 py-2 text-right text-slate-600">{{ t.closing_at|shortdate }}</td>
-        </tr>
-        {% else %}
-        <tr><td colspan="4" class="px-4 py-8 text-center text-slate-500">
-          No records yet. Run the seed script or a connector to populate the corpus.
-        </td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <a class="btn primary" href="/settings">Paste API key →</a>
+  </div>
+</div>
+{% endif %}
+
+<div class="kpis mt-4">
+  <div class="kpi">
+    <div class="kpi-label">Tender records</div>
+    <div class="kpi-value">{{ '{:,}'.format(stats.tenders) }}</div>
+    <div class="kpi-note">across all connected sources</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">With price ladder</div>
+    <div class="kpi-value red">{{ '{:,}'.format(stats.with_ladder) }}</div>
+    <div class="kpi-note">{{ stats.ladder_pct }}% of records</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Awards</div>
+    <div class="kpi-value">{{ '{:,}'.format(stats.awards) }}</div>
+    <div class="kpi-note">contracts with a recorded value</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Price observations</div>
+    <div class="kpi-value">{{ '{:,}'.format(stats.observations) }}</div>
+    <div class="kpi-note">awarded and L1–L3 quotes</div>
+  </div>
+</div>
+
+<div class="grid g4 mt-2">
+  {% for label, value in [('Products', stats.products), ('Suppliers', stats.suppliers),
+                          ('Buying organisations', stats.buyers),
+                          ('Runnable sources', stats.runnable_sources|string + ' / ' + stats.total_sources|string)] %}
+  <div class="kpi flat">
+    <div class="kpi-label">{{ label }}</div>
+    <div class="kpi-value">{{ value }}</div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="grid mt-4" style="grid-template-columns: minmax(0,2fr) minmax(0,1fr); gap:18px">
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <div class="card-title">Most recent records</div>
+        <div class="card-sub">Newest first, from every enabled source</div>
+      </div>
+      <a class="btn sm" href="/search">View all</a>
+    </div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th>Tender</th><th>Buyer</th><th>State</th><th class="num">Closing</th></tr>
+        </thead>
+        <tbody>
+          {% for t in recent %}
+          <tr>
+            <td>
+              <a class="strong" href="/tender/{{ t.id }}">{{ t.title|truncate(66) }}</a>
+              <div class="tiny-sm muted mono">{{ t.portal_tender_id }}</div>
+            </td>
+            <td class="muted">{{ (t.organisation.canonical_name if t.organisation else '—')|truncate(30) }}</td>
+            <td class="muted">{{ t.state or '—' }}</td>
+            <td class="num muted">{{ t.closing_at|shortdate }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="4">
+            <div class="empty">
+              <strong>No records yet</strong>
+              Run <code>make seed</code> for a demo corpus, or a connector against a live source.
+            </div>
+          </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="space-y-6">
-    <div class="rounded-lg border border-rule p-4">
-      <h2 class="text-sm font-semibold text-navy">Price basis split</h2>
-      <p class="mt-0.5 text-xs text-slate-500">Bases are never blended in a statistic.</p>
-      <ul class="mt-3 space-y-2">
+  <div class="stack">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Price basis split</div>
+          <div class="card-sub">Never blended in a statistic</div>
+        </div>
+      </div>
+      <div class="card-body">
         {% set maxb = (by_basis|map(attribute='count')|max) if by_basis else 1 %}
         {% for b in by_basis %}
-        <li>
-          <div class="flex justify-between text-xs"><span class="font-medium text-slate-700">{{ b.basis }}</span>
-            <span class="text-slate-500">{{ b.count }}</span></div>
-          <div class="mt-1 h-1.5 w-full rounded bg-mist">
-            <div class="h-1.5 rounded bg-teal" style="width: {{ (b.count / maxb * 100)|round(1) }}%"></div>
+        <div class="mb-0" style="margin-bottom:12px">
+          <div class="row between" style="margin-bottom:5px">
+            <span class="tiny" style="font-weight:600">{{ b.basis }}</span>
+            <span class="tiny muted">{{ '{:,}'.format(b.count) }}</span>
           </div>
-        </li>
+          <div class="bar"><span style="width: {{ (b.count / maxb * 100)|round(1) }}%"></span></div>
+        </div>
         {% else %}
-        <li class="text-xs text-slate-500">No price observations yet.</li>
+        <p class="tiny muted mb-0">No price observations yet.</p>
         {% endfor %}
-      </ul>
+      </div>
     </div>
 
-    <div class="rounded-lg border border-rule p-4">
-      <h2 class="text-sm font-semibold text-navy">Top states</h2>
-      <ul class="mt-2 space-y-1 text-sm">
-        {% for s in by_state %}
-        <li class="flex justify-between"><span class="text-slate-600">{{ s.state }}</span>
-          <span class="text-slate-500">{{ s.count }}</span></li>
-        {% else %}
-        <li class="text-xs text-slate-500">No state data yet.</li>
-        {% endfor %}
-      </ul>
+    <div class="card">
+      <div class="card-head"><div class="card-title">Top states</div></div>
+      <div class="card-body tight">
+        <ul class="list" style="padding:0 16px">
+          {% for s in by_state %}
+          <li><span class="tiny">{{ s.state }}</span><span class="tiny muted">{{ s.count }}</span></li>
+          {% else %}
+          <li><span class="tiny muted">No state data yet.</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">Source health</div>
+        <a class="tiny" href="/sources">details →</a>
+      </div>
+      <div class="card-body tight">
+        <ul class="list" style="padding:0 16px">
+          {% for s in sources[:6] %}
+          <li>
+            <span class="tiny">{{ s.name|truncate(28) }}</span>
+            {% if s.consecutive_failures %}
+              <span class="badge red">{{ s.consecutive_failures }} fails</span>
+            {% elif s.last_success_at %}
+              <span class="badge green">ok</span>
+            {% else %}
+              <span class="badge outline">idle</span>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-  <p class="font-medium">Reading these numbers</p>
-  <p class="mt-1 text-amber-800">Coverage is a property of the corpus, not a promise. A tender with no
-    published result will never show a price ladder, and an estimated tender value is labelled as such
-    rather than presented as an award.</p>
+<div class="alert info mt-4">
+  <span class="icon">i</span>
+  <div>
+    <strong>Reading these numbers.</strong> Coverage is a property of the corpus, not a promise.
+    A tender whose result was never published will never show a price ladder, and an estimated
+    tender value is labelled as an estimate rather than presented as an award.
+  </div>
 </div>
 
 {% endblock %}
